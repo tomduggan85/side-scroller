@@ -2,7 +2,7 @@ import { observable, action } from 'mobx'
 import GameObjectTypes from '../shared/GameObjectTypes'
 import uuid from 'uuid'
 
-const GRAVITY = -0.1
+const GRAVITY = 1
 
 class GameObject {
 
