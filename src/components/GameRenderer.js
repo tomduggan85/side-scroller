@@ -18,10 +18,11 @@ class GameRenderer extends React.Component {
 
     return (
       <div className='GameRenderer'>
-        {this.props.gameState.gameObjects.map( gameObject => (
+        {this.props.gameState.players.map(( player, playerNumber ) => (
           <PlayerRenderer
-            key={gameObject.id}
-            player={gameObject}
+            key={player.id}
+            player={player}
+            playerNumber={playerNumber}
           />
         ))}
       </div>

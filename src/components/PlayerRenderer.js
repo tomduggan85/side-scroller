@@ -1,6 +1,8 @@
 import React from 'react'
 import './PlayerRenderer.css'
 import { observer } from 'mobx-react'
+import directions from '../shared/enum/directions'
+import keyboardControls from '../shared/keyboardControls'
 
 @observer
 class PlayerRenderer extends React.Component {
@@ -16,25 +18,32 @@ class PlayerRenderer extends React.Component {
   }
 
   onKeyDown = ( e ) => {
+    const controls = keyboardControls[ this.props.playerNumber ]
+    
     switch( e.keyCode ) {
-      case 65: //A
+      case controls.left: //A
         this.props.player.onLeft()
+        e.preventDefault()
         break
 
-      case 68: //D
+      case controls.right: //D
         this.props.player.onRight()
+        e.preventDefault()
         break
 
-      case 87: //W
+      case controls.up: //W
         this.props.player.onUp()
+        e.preventDefault()
         break
 
-      case 83: //S
+      case controls.down: //S
         this.props.player.onDown()
+        e.preventDefault()
         break
 
-      case 32: //S
+      case controls.jump: //S
         this.props.player.onJump()
+        e.preventDefault()
         break
 
       default:
@@ -43,21 +52,27 @@ class PlayerRenderer extends React.Component {
   }
 
   onKeyUp = ( e ) => {
+    const controls = keyboardControls[ this.props.playerNumber ]
+
     switch( e.keyCode ) {
-      case 65: //A
+      case controls.left: //A
         this.props.player.offLeft()
+        e.preventDefault()
         break
 
-      case 68: //D
+      case controls.right: //D
         this.props.player.offRight()
+        e.preventDefault()
         break
 
-      case 87: //W
+      case controls.up: //W
         this.props.player.offUp()
+        e.preventDefault()
         break
 
-      case 83: //S
+      case controls.down: //S
         this.props.player.offDown()
+        e.preventDefault()
         break
 
       default:
@@ -71,9 +86,14 @@ class PlayerRenderer extends React.Component {
         x,
         y,
         z
-      }
+      },
+      direction
     } = this.props.player
-    const transform = `translateX(${ x }px) translateY(${( -y - z) }px)` //Y and Z movement of the player both move the renderer upwards on the screen
+
+    const directionScale = direction === directions.left ? -1 : 1
+    const yTranslation =  (-y - z) // Combine Y and Z scene positions of the gameObject into a Y screen position (and negate it, so positive scene-Y moves up the screen)
+
+    const transform = `translate3d(${ x }px, ${ yTranslation }px, 0) scaleX(${ directionScale })`
 
     return (
       <div
