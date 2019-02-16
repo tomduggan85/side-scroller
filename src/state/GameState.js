@@ -9,8 +9,12 @@ class GameState {
 
   constructor() {
     this.stepGameLoop = this.stepGameLoop.bind(this)
+    
+    //Player 1
     this.addPlayer({ x: 0, y: 0, z: 0 })
-    this.addPlayer({ x: 300, y: 0, z: 0 })
+    
+    //Player 2
+    //this.addPlayer({ x: 300, y: 0, z: 0 })
   }
 
   addPlayer( position ) {

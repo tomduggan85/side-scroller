@@ -25,6 +25,17 @@ class GameObject {
   }
 
   @observable
+  spritePosition = {
+    x: 0,
+    y: 0
+  }
+
+  animationState = {
+    trackName: null,
+    startTime: 0,
+  };
+
+  @observable
   direction = directions.right
 
   constructor( props ) {
@@ -35,8 +46,13 @@ class GameObject {
 
   @action
   step() {
+    this.stepMovement()
+    this.stepAnimation()
+  }
 
-    // Set direction based on x-velocity.  If velocity is 0, leave direction alone (preserving the previous direction)
+  @action
+  stepMovement() {
+     // Set direction based on x-velocity.  If velocity is 0, leave direction alone (preserving the previous direction)
     if ( this.velocity.x < 0 ) {
       this.direction = directions.left
     }
@@ -60,8 +76,42 @@ class GameObject {
     }
   }
 
+  @action
+  stepAnimation() {
+    const { trackName, startTime } = this.animationState
+    if ( !trackName ) {
+      return
+    }
+
+    const {
+      duration,
+      frameCount,
+      startX,
+      startY,
+      frameWidth
+    } = this.animationTracks[ trackName ]
+    
+    const now = performance.now()
+    const currentFrame = Math.floor((( now - startTime ) / duration % 1 ) * frameCount)
+      
+    this.spritePosition.x = startX + currentFrame * frameWidth
+    this.spritePosition.y = startY
+  }
+
   isOnGround() {
     return this.position.y === 0
+  }
+
+  @action
+  setAnimation( trackName ) {
+    if ( this.animationState.trackName === trackName ) {
+      return
+    }
+
+    this.animationState = {
+      trackName,
+      startTime: performance.now(),
+    }
   }
 }
 

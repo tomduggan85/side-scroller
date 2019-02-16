@@ -87,6 +87,10 @@ class PlayerRenderer extends React.Component {
         y,
         z
       },
+      spritePosition: {
+        x: spriteX,
+        y: spriteY,
+      },
       direction
     } = this.props.player
 
@@ -94,11 +98,17 @@ class PlayerRenderer extends React.Component {
     const yTranslation =  (-y - z) // Combine Y and Z scene positions of the gameObject into a Y screen position (and negate it, so positive scene-Y moves up the screen)
 
     const transform = `translate3d(${ x }px, ${ yTranslation }px, 0) scaleX(${ directionScale })`
+    const zIndex = 9999 - z
+    const backgroundPosition = `${ -spriteX }px ${ -spriteY }px`
 
     return (
       <div
         className='player-renderer'
-        style={{ transform }}
+        style={{
+          transform,
+          zIndex,
+          backgroundPosition
+        }}
       />
     )
   }

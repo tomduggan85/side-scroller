@@ -3,8 +3,7 @@
   bottom: 0;
   left: 0;
   background-image: url('/assets/images/player1.png');
-  width: 75px;
-  height: 105px;
-  background-size: 800px 800px;
-  background-position: -8px -1px;
+  width: 55px;
+  height: 110px;
+  background-size: 700px 600px;
 }
