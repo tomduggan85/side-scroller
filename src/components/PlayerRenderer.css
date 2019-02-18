@@ -1,9 +1,0 @@
-.player-renderer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background-image: url('/assets/images/player1.png');
-  width: 55px;
-  height: 110px;
-  background-size: 700px 600px;
-}

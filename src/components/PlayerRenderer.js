@@ -1,11 +1,9 @@
-import React from 'react'
-import './PlayerRenderer.css'
 import { observer } from 'mobx-react'
-import directions from '../shared/enum/directions'
 import keyboardControls from '../shared/keyboardControls'
+import GameObjectRenderer from './GameObjectRenderer'
 
 @observer
-class PlayerRenderer extends React.Component {
+class PlayerRenderer extends GameObjectRenderer {
 
   componentDidMount() {
     document.addEventListener( 'keydown', this.onKeyDown )
@@ -18,31 +16,31 @@ class PlayerRenderer extends React.Component {
   }
 
   onKeyDown = ( e ) => {
-    const controls = keyboardControls[ this.props.playerNumber ]
+    const controls = keyboardControls[ this.props.gameObject.playerNumber ]
     
     switch( e.keyCode ) {
       case controls.left: //A
-        this.props.player.onLeft()
+        this.props.gameObject.onLeft()
         e.preventDefault()
         break
 
       case controls.right: //D
-        this.props.player.onRight()
+        this.props.gameObject.onRight()
         e.preventDefault()
         break
 
       case controls.up: //W
-        this.props.player.onUp()
+        this.props.gameObject.onUp()
         e.preventDefault()
         break
 
       case controls.down: //S
-        this.props.player.onDown()
+        this.props.gameObject.onDown()
         e.preventDefault()
         break
 
       case controls.jump: //S
-        this.props.player.onJump()
+        this.props.gameObject.onJump()
         e.preventDefault()
         break
 
@@ -52,65 +50,32 @@ class PlayerRenderer extends React.Component {
   }
 
   onKeyUp = ( e ) => {
-    const controls = keyboardControls[ this.props.playerNumber ]
+    const controls = keyboardControls[ this.props.gameObject.playerNumber ]
 
     switch( e.keyCode ) {
       case controls.left: //A
-        this.props.player.offLeft()
+        this.props.gameObject.offLeft()
         e.preventDefault()
         break
 
       case controls.right: //D
-        this.props.player.offRight()
+        this.props.gameObject.offRight()
         e.preventDefault()
         break
 
       case controls.up: //W
-        this.props.player.offUp()
+        this.props.gameObject.offUp()
         e.preventDefault()
         break
 
       case controls.down: //S
-        this.props.player.offDown()
+        this.props.gameObject.offDown()
         e.preventDefault()
         break
 
       default:
         break
     }
-  }
-
-  render() {
-    const {
-      position: {
-        x,
-        y,
-        z
-      },
-      spritePosition: {
-        x: spriteX,
-        y: spriteY,
-      },
-      direction
-    } = this.props.player
-
-    const directionScale = direction === directions.left ? -1 : 1
-    const yTranslation =  (-y - z) // Combine Y and Z scene positions of the gameObject into a Y screen position (and negate it, so positive scene-Y moves up the screen)
-
-    const transform = `translate3d(${ x }px, ${ yTranslation }px, 0) scaleX(${ directionScale })`
-    const zIndex = 9999 - z
-    const backgroundPosition = `${ -spriteX }px ${ -spriteY }px`
-
-    return (
-      <div
-        className='player-renderer'
-        style={{
-          transform,
-          zIndex,
-          backgroundPosition
-        }}
-      />
-    )
   }
 }
 

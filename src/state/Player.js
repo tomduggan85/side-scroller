@@ -1,9 +1,9 @@
 import GameObject from './GameObject'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
-import { action } from 'mobx'
+import { action, observable } from 'mobx'
 
 const WALK_SPEED = 3
-const JUMP_VELOCITY = 15
+const JUMP_VELOCITY = 20
 
 class Player extends GameObject {
 
@@ -17,23 +17,35 @@ class Player extends GameObject {
 
   animationTracks = {
     standing: {
-      startX: 15,
-      startY: 0,
+      yPos: 0,
       frameWidth: 30,
-      frameCount: 1,
+      frames: [{ x: 15, y: 0 }],
       duration: 1000,
     },
     walking: {
-      startX: 125,
-      startY: 0,
-      frameWidth: 50,
-      frameCount: 3,
+      yPos: 0,
+      frames: [
+        { x: 216, y: 0 }, 
+        { x: 280, y: 0 },
+        { x: 216, y: 0 },
+        { x: 154, y: 0 }
+      ],
       duration: 600,
     }
   }
 
+  @observable 
+  spriteScale = '1300%'
+
+  @observable
+  spriteWidth = 68
+
+  @observable
+  spriteHeight = 132
+
   constructor( props ) {
     super( props )
+    this.playerNumber = props.playerNumber
     this.setAnimation( 'standing' )
   }
 

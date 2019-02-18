@@ -3,7 +3,7 @@ import GameObjectTypes from '../shared/enum/GameObjectTypes'
 import directions from '../shared/enum/directions'
 import uuid from 'uuid'
 
-const GRAVITY = 1
+const GRAVITY = 0.8
 
 class GameObject {
 
@@ -30,6 +30,18 @@ class GameObject {
     y: 0
   }
 
+  @observable
+  spriteUrl = ''
+
+  @observable
+  spriteScale = 0
+
+  @observable
+  spriteWidth = 0 
+
+  @observable
+  spriteHeight = 0  
+
   animationState = {
     trackName: null,
     startTime: 0,
@@ -38,7 +50,7 @@ class GameObject {
   @observable
   direction = directions.right
 
-  constructor( props ) {
+  constructor( props = {} ) {
     if ( props.position ) {
       this.position = { ...props.position }
     }
@@ -85,17 +97,14 @@ class GameObject {
 
     const {
       duration,
-      frameCount,
-      startX,
-      startY,
-      frameWidth
+      frames,
     } = this.animationTracks[ trackName ]
     
     const now = performance.now()
-    const currentFrame = Math.floor((( now - startTime ) / duration % 1 ) * frameCount)
+    const currentFrame = Math.floor((( now - startTime ) / duration % 1 ) * frames.length)
       
-    this.spritePosition.x = startX + currentFrame * frameWidth
-    this.spritePosition.y = startY
+    this.spritePosition.x = frames[ currentFrame ].x
+    this.spritePosition.y = frames[ currentFrame ].y
   }
 
   isOnGround() {
