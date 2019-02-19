@@ -17,13 +17,11 @@ class Player extends GameObject {
 
   animationTracks = {
     standing: {
-      yPos: 0,
       frameWidth: 30,
       frames: [{ x: 15, y: 0 }],
       duration: 1000,
     },
     walking: {
-      yPos: 0,
       frames: [
         { x: 216, y: 0 }, 
         { x: 280, y: 0 },
@@ -31,6 +29,17 @@ class Player extends GameObject {
         { x: 154, y: 0 }
       ],
       duration: 600,
+    },
+    in_air: {
+      frames: [
+      //  { x: 358, y: 0 }, 
+        { x: 432, y: 0 }, 
+        { x: 500, y: 0 },
+        { x: 580, y: 0 },
+        { x: 655, y: 0 }
+      ],
+
+      duration: 400,
     }
   }
 
@@ -51,23 +60,23 @@ class Player extends GameObject {
 
   @action
   onRight() {
-    this.setAnimation( 'walking' )
     this.keyState.right = true
     this.velocity.x = WALK_SPEED
+    this.updateMovementAnimation()
   }
 
   @action
   offRight() {
     this.keyState.right = false
     this.velocity.x = this.keyState.left ? -WALK_SPEED : 0
-    this.maybeShowStanding()
+    this.updateMovementAnimation()
   }
 
   @action
   onLeft() {
-    this.setAnimation( 'walking' )
     this.keyState.left = true
     this.velocity.x = -WALK_SPEED
+    this.updateMovementAnimation()
   }
 
   @action
@@ -75,28 +84,28 @@ class Player extends GameObject {
     this.keyState.left = false
     this.velocity.x = 0
     this.velocity.x = this.keyState.right ? WALK_SPEED : 0
-    this.maybeShowStanding()
+    this.updateMovementAnimation()
   }
 
   @action
   onUp() {
-    this.setAnimation( 'walking' )
     this.keyState.up = true
     this.velocity.z = WALK_SPEED
+    this.updateMovementAnimation()
   }
 
   @action
   offUp() {
     this.keyState.up = false
     this.velocity.z = this.keyState.down ? -WALK_SPEED : 0
-    this.maybeShowStanding()
+    this.updateMovementAnimation()
   }
 
   @action
   onDown() {
-    this.setAnimation( 'walking' )
     this.keyState.down = true
     this.velocity.z = -WALK_SPEED
+    this.updateMovementAnimation()
   }
 
   @action
@@ -104,20 +113,32 @@ class Player extends GameObject {
     this.setAnimation( 'walking' )
     this.keyState.down = false
     this.velocity.z = this.keyState.up ? WALK_SPEED : 0
-    this.maybeShowStanding()
-  }
-
-  @action
-  maybeShowStanding() {
-    if ( !Object.values(this.keyState).some( k => k )) {
-      this.setAnimation( 'standing' )
-    }
+    this.updateMovementAnimation()
   }
 
   @action
   onJump() {
     if ( this.isOnGround()) {
       this.velocity.y = JUMP_VELOCITY
+      this.setAnimation( 'in_air' )
+    }
+  }
+
+  @action
+  onReturnToGround() {
+    this.updateMovementAnimation()
+  }
+
+  @action
+  updateMovementAnimation() {
+    if ( !this.isOnGround() ) {
+      this.setAnimation( 'in_air' )
+    }
+    else if ( Object.values(this.keyState).some( k => k )) {
+      this.setAnimation( 'walking' )
+    }
+    else {
+      this.setAnimation( 'standing' ) 
     }
   }
 }

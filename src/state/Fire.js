@@ -7,7 +7,6 @@ class Fire extends GameObject {
 
   animationTracks = {
     default: {
-      yPos: 0,
       frames: [
         { x: 0, y: 0 },
         { x: 0, y: 128 },

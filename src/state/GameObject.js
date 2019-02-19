@@ -83,8 +83,10 @@ class GameObject {
     this.position.z += this.velocity.z
 
     //Prevent falling through the ground
-    if ( this.position.y < 0 ) {
+    if ( this.position.y <= 0 && this.velocity.y < 0 ) {
       this.position.y = 0
+      this.velocity.y = 0
+      this.onReturnToGround()
     }
   }
 
@@ -109,6 +111,11 @@ class GameObject {
 
   isOnGround() {
     return this.position.y === 0
+  }
+
+  @action
+  onReturnToGround() {
+    
   }
 
   @action

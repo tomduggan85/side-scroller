@@ -18,10 +18,10 @@ class GameState {
     this.stepGameLoop = this.stepGameLoop.bind(this)
     
     //Player 1
-    this.addPlayer( BluePlayer )
+    this.addPlayer( BluePlayer, { x: 200, y: 0, z: 100 })
     
     //Player 2
-    this.addPlayer( OrangePlayer, { x: 300, y: 0, z: 0 })
+    this.addPlayer( OrangePlayer, { x: 300, y: 0, z: 200 })
 
     //Fire
     this.gameObjects.push(new Fire())
