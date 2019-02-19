@@ -100,10 +100,24 @@ class GameObject {
     const {
       duration,
       frames,
+      loopStartFrame,
+      introDuration,
     } = this.animationTracks[ trackName ]
     
     const now = performance.now()
-    const currentFrame = Math.floor((( now - startTime ) / duration % 1 ) * frames.length)
+    let currentFrame
+    if ( loopStartFrame ) {
+      if ( now - startTime <= introDuration ) {
+        currentFrame = Math.floor(( now - startTime ) / introDuration ) * loopStartFrame
+      }
+      else {
+        currentFrame = loopStartFrame + Math.floor((( now - startTime - introDuration ) / duration % 1 ) * ( frames.length - loopStartFrame ))
+      }
+    }
+    else {
+      currentFrame = Math.floor((( now - startTime ) / duration % 1 ) * frames.length)  
+    }
+    
       
     this.spritePosition.x = frames[ currentFrame ].x
     this.spritePosition.y = frames[ currentFrame ].y
@@ -115,7 +129,7 @@ class GameObject {
 
   @action
   onReturnToGround() {
-    
+
   }
 
   @action

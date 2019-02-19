@@ -32,13 +32,14 @@ class Player extends GameObject {
     },
     in_air: {
       frames: [
-      //  { x: 358, y: 0 }, 
+        { x: 358, y: 0 }, 
         { x: 432, y: 0 }, 
         { x: 500, y: 0 },
         { x: 580, y: 0 },
         { x: 655, y: 0 }
       ],
-
+      loopStartFrame: 1,
+      introDuration: 150,
       duration: 400,
     }
   }
