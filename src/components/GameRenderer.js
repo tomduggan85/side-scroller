@@ -21,24 +21,24 @@ class GameRenderer extends React.Component {
     const {
       gameObjects,
       level,
+      camera
     } = this.props.gameState
 
     return (
       <div className='GameRenderer'>
         
-        <LevelRenderer level={level} />
-        <div className='game-objects'>
-        {gameObjects.map(( gameObject ) => {
-          const RendererType = gameObject.type === GameObjectTypes.Player ? PlayerRenderer : GameObjectRenderer
+        <LevelRenderer level={level} camera={camera}>
+          {gameObjects.map(( gameObject ) => {
+            const RendererType = gameObject.type === GameObjectTypes.Player ? PlayerRenderer : GameObjectRenderer
 
-          return (
-            <RendererType
-              key={gameObject.id}
-              gameObject={gameObject}
-            />
-          )
-        })}
-        </div>
+            return (
+              <RendererType
+                key={gameObject.id}
+                gameObject={gameObject}
+              />
+            )
+          })}
+        </LevelRenderer>
         <HUD />
       </div>
     )

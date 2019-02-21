@@ -1,0 +1,19 @@
+.level-renderer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  
+  .level-background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: auto;
+    display: block;
+  }
+
+  .game-objects {
+    position: absolute;
+  }
+}

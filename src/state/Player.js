@@ -1,6 +1,7 @@
 import GameObject from './GameObject'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
 import { action, observable } from 'mobx'
+import directions from '../shared/enum/directions'
 
 const WALK_SPEED = 3
 const JUMP_VELOCITY = 20
@@ -17,7 +18,6 @@ class Player extends GameObject {
 
   animationTracks = {
     standing: {
-      frameWidth: 30,
       frames: [{ x: 15, y: 0 }],
       duration: 1000,
     },
@@ -39,7 +39,7 @@ class Player extends GameObject {
         { x: 655, y: 0 }
       ],
       loopStartFrame: 1,
-      introDuration: 150,
+      introDuration: 100,
       duration: 400,
     }
   }
@@ -48,10 +48,13 @@ class Player extends GameObject {
   spriteScale = '1300%'
 
   @observable
-  spriteWidth = 68
+  spriteHeight = 132
 
   @observable
-  spriteHeight = 132
+  screenWidth = 68
+
+  @observable
+  collisionWidth = 64
 
   constructor( props ) {
     super( props )
@@ -119,7 +122,7 @@ class Player extends GameObject {
 
   @action
   onJump() {
-    if ( this.isOnGround()) {
+    if ( this.onGround ) {
       this.velocity.y = JUMP_VELOCITY
       this.setAnimation( 'in_air' )
     }
@@ -132,7 +135,7 @@ class Player extends GameObject {
 
   @action
   updateMovementAnimation() {
-    if ( !this.isOnGround() ) {
+    if ( !this.onGround ) {
       this.setAnimation( 'in_air' )
     }
     else if ( Object.values(this.keyState).some( k => k )) {
@@ -141,6 +144,25 @@ class Player extends GameObject {
     else {
       this.setAnimation( 'standing' ) 
     }
+  }
+
+  @action
+  step() {
+    super.step()
+
+    // Set direction based on x-velocity.  If velocity is 0, leave direction alone (preserving the previous direction)
+    if ( this.velocity.x < 0 ) {
+      this.direction = directions.left
+    }
+    else if ( this.velocity.x > 0 ) {
+      this.direction = directions.right
+    }
+
+    //Prevent walking outside of level
+    this.position.z = Math.max( this.level.minZ, Math.min( this.level.maxZ, this.position.z ))
+
+    //Prevent backtracking past camera
+    this.position.x = Math.max( this.camera.position.x + this.camera.screenLeftEdge, this.position.x )
   }
 }
 

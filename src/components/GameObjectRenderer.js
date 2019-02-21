@@ -19,35 +19,56 @@ class GameObjectRenderer extends React.Component {
       },
       direction,
       spriteUrl,
+      screenWidth,
       spriteWidth,
       spriteHeight,
       spriteScale,
+      onGround,
     } = this.props.gameObject
 
     const directionScale = direction === directions.left ? -1 : 1
-    const yTranslation =  (-y - z) // Combine Y and Z scene positions of the gameObject into a Y screen position (and negate it, so positive scene-Y moves up the screen)
-
-    const transform = `translate3d(${ x }px, ${ yTranslation }px, 0) scaleX(${ directionScale })`
+    
     const zIndex = 9999 - z
     const backgroundPosition = `${ -spriteX }px ${ -spriteY }px`
     const backgroundImage = `url(${ spriteUrl })`
     const backgroundSize = `${ spriteScale }`
-    const width = `${ spriteWidth }px`
-    const height = `${ spriteHeight }px`
+
+    const transform = `translate3d(${ x }px, ${ -z }px, 0)`
+
+    const spriteTransform = `translate3d(0, ${ -y }px, 0) scaleX(${ directionScale })`
 
     return (
       <div
         className='game-object-renderer'
         style={{
-          transform,
           zIndex,
-          backgroundPosition,
-          backgroundImage,
-          backgroundSize,
-          width,
-          height
+          transform,
+          width: `${ screenWidth }px`,
+          height: `${ spriteHeight }px`,
         }}
-      />
+      >
+        <div
+          className='sprite'
+          style={{
+            transform: spriteTransform,
+            backgroundPosition,
+            backgroundImage,
+            backgroundSize,
+            width: `${ spriteWidth }px`,
+            height: `${ spriteHeight }px`,
+            left: direction === directions.right ? 0 : 'auto',
+            right: direction === directions.left ? 0 : 'auto'
+          }}
+        />
+        <div
+          className='game-object-shadow'
+          style={{
+            
+            display: onGround ? 'none' : 'block',
+            zIndex,
+          }}
+        />
+      </div>
     )
   }
 }

@@ -20,7 +20,7 @@ class Fire extends GameObject {
   spriteScale = 'auto 305%'
 
   @observable 
-  spriteWidth = 2000
+  screenWidth = 8000
 
   @observable 
   spriteHeight = 125

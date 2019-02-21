@@ -1,18 +1,20 @@
 import BluePlayer from './BluePlayer'
 import OrangePlayer from './OrangePlayer'
 import Fire from './Fire'
+import FootEnemy from './FootEnemy'
 import Level from './Level'
+import Camera from './Camera'
 import { action, observable, computed } from 'mobx'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
 
 class GameState {
 
-  playerCount = 0
-
   @observable
   gameObjects = []
 
   level = new Level()
+
+  camera = new Camera({ gameState: this })
 
   constructor() {
     this.stepGameLoop = this.stepGameLoop.bind(this)
@@ -24,16 +26,28 @@ class GameState {
     this.addPlayer( OrangePlayer, { x: 300, y: 0, z: 200 })
 
     //Fire
-    this.gameObjects.push(new Fire())
+    this.addGameObject( Fire )
+
+    //Enemy
+    this.addGameObject( FootEnemy, {
+      position: { x: 20, y: 0, z: 200 },
+      gameState: this,
+    })
   }
 
   addPlayer( PlayerType, position = { x: 0, y: 0, z: 0} ) {
-    this.gameObjects.push(new PlayerType( {
+    this.addGameObject( PlayerType, {
       position,
-      playerNumber: this.playerCount
-    }))
+      playerNumber: this.players.length,
+    })
+  }
 
-    this.playerCount++
+  addGameObject( GameObjectType, props ) {
+    this.gameObjects.push( new GameObjectType({
+      level: this.level,
+      camera: this.camera,
+      ...props
+    }))
   }
 
   @action
@@ -49,6 +63,9 @@ class GameState {
   @action
   stepGameLoop() {
     this.gameObjects.forEach( gameObject => gameObject.step())
+    
+    this.camera.step()
+
     this._gameLoopRAF = requestAnimationFrame(this.stepGameLoop)
   }
 

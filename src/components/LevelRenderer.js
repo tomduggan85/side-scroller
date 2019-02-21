@@ -1,5 +1,5 @@
 import React from 'react'
-import './LevelRenderer.css'
+import './LevelRenderer.scss'
 import { observer } from 'mobx-react'
 
 @observer
@@ -11,12 +11,24 @@ class LevelRenderer extends React.Component {
       backgroundUrl
     } = this.props.level
 
+    const { camera } = this.props
+
     return (
-      <img
+      <div
         className='level-renderer'
-        src={ backgroundUrl }
-        alt=''
-      />
+        style={{
+          transform: `translate3d(${ -camera.position.x }px, 0, 0)`
+        }}
+      >
+        <img
+          className='level-background'
+          src={ backgroundUrl }
+          alt=''
+        />
+        <div className='level-game-objects'>
+          {this.props.children}
+        </div>
+      </div>
     )
   }
 }

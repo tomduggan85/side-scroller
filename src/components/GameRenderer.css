@@ -5,8 +5,4 @@
   background: #777;
   position: relative;
   overflow: hidden;
-
-  .game-objects {
-    position: absolute;
-  }
 }

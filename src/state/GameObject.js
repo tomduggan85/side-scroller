@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx'
+import { observable, action, computed } from 'mobx'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
 import directions from '../shared/enum/directions'
 import uuid from 'uuid'
@@ -42,6 +42,9 @@ class GameObject {
   @observable
   spriteHeight = 0  
 
+  @observable
+  screenWidth = 0
+
   animationState = {
     trackName: null,
     startTime: 0,
@@ -54,6 +57,8 @@ class GameObject {
     if ( props.position ) {
       this.position = { ...props.position }
     }
+    this.level = props.level
+    this.camera = props.camera
   }
 
   @action
@@ -64,16 +69,8 @@ class GameObject {
 
   @action
   stepMovement() {
-     // Set direction based on x-velocity.  If velocity is 0, leave direction alone (preserving the previous direction)
-    if ( this.velocity.x < 0 ) {
-      this.direction = directions.left
-    }
-    else if ( this.velocity.x > 0 ) {
-      this.direction = directions.right
-    }
-
     //Add gravity to y-velocity, if in the air
-    if ( !this.isOnGround()) {
+    if ( !this.onGround ) {
       this.velocity.y -= GRAVITY
     }
 
@@ -121,9 +118,11 @@ class GameObject {
       
     this.spritePosition.x = frames[ currentFrame ].x
     this.spritePosition.y = frames[ currentFrame ].y
+    this.spriteWidth = frames[ currentFrame ].width || this.screenWidth
   }
 
-  isOnGround() {
+  @computed
+  get onGround() {
     return this.position.y === 0
   }
 
