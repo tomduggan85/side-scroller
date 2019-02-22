@@ -3,12 +3,13 @@ import GameObjectTypes from '../shared/enum/GameObjectTypes'
 import directions from '../shared/enum/directions'
 import uuid from 'uuid'
 
-const GRAVITY = 0.8
+const GRAVITY = 0.6
 
 class GameObject {
 
   type = GameObjectTypes.GameObject
   id = uuid.v4()
+  movementFreezes = {}
 
   @observable
   position = {
@@ -23,6 +24,9 @@ class GameObject {
     y: 0,
     z: 0,
   }
+
+  @observable
+  airborneOverrideVelocity = null
 
   @observable
   spritePosition = {
@@ -45,6 +49,9 @@ class GameObject {
   @observable
   screenWidth = 0
 
+  @observable
+  screenHeight = 0
+
   animationState = {
     trackName: null,
     startTime: 0,
@@ -59,12 +66,37 @@ class GameObject {
     }
     this.level = props.level
     this.camera = props.camera
+    this.gameState = props.gameState
   }
 
   @action
   step() {
-    this.stepMovement()
+    if ( this.airborneOverrideVelocity ) {
+      this.stepAirborneOverrideVelocity()
+    }
+    else if ( !this.isMovementFrozen() ) {
+      this.stepMovement()
+    }
     this.stepAnimation()
+  }
+
+  @action
+  stepAirborneOverrideVelocity() {
+    //Add gravity to y-velocity, if in the air
+    if ( !this.onGround ) {
+      this.airborneOverrideVelocity.y -= GRAVITY
+    }
+
+    //Integrate velocity
+    this.position.x += this.airborneOverrideVelocity.x
+    this.position.y += this.airborneOverrideVelocity.y
+    this.position.z += this.airborneOverrideVelocity.z
+
+    //Prevent falling through the ground
+    if ( this.position.y <= 0 ) {
+      this.position.y = 0
+      this.onReturnToGround()
+    }
   }
 
   @action
@@ -119,6 +151,7 @@ class GameObject {
     this.spritePosition.x = frames[ currentFrame ].x
     this.spritePosition.y = frames[ currentFrame ].y
     this.spriteWidth = frames[ currentFrame ].width || this.screenWidth
+    this.spriteHeight = frames[ currentFrame ].height || this.screenHeight
   }
 
   @computed
@@ -128,7 +161,7 @@ class GameObject {
 
   @action
   onReturnToGround() {
-
+    this.airborneOverrideVelocity = null
   }
 
   @action
@@ -141,6 +174,23 @@ class GameObject {
       trackName,
       startTime: performance.now(),
     }
+  }
+
+  freezeMovement( duration, reason ) {
+    this.movementFreezes[ reason ] = performance.now() + duration
+  }
+
+  clearMovementFreezes() {
+    this.movementFreezes = {}
+  }
+
+  isMovementFrozen() {
+    const now = performance.now()
+    return Object.values( this.movementFreezes ).some( frozenUntilTime => frozenUntilTime >= now )
+  }
+
+  setAirborneOverrideVelocity( velocity ) {
+    this.airborneOverrideVelocity = velocity
   }
 }
 

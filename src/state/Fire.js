@@ -23,7 +23,7 @@ class Fire extends GameObject {
   screenWidth = 8000
 
   @observable 
-  spriteHeight = 125
+  screenHeight = 125
 
   constructor( props ) {
     super( props )

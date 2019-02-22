@@ -20,6 +20,7 @@ class GameObjectRenderer extends React.Component {
       direction,
       spriteUrl,
       screenWidth,
+      screenHeight,
       spriteWidth,
       spriteHeight,
       spriteScale,
@@ -44,7 +45,7 @@ class GameObjectRenderer extends React.Component {
           zIndex,
           transform,
           width: `${ screenWidth }px`,
-          height: `${ spriteHeight }px`,
+          height: `${ screenHeight }px`,
         }}
       >
         <div

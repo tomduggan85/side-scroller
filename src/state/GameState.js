@@ -31,7 +31,6 @@ class GameState {
     //Enemy
     this.addGameObject( FootEnemy, {
       position: { x: 20, y: 0, z: 200 },
-      gameState: this,
     })
   }
 
@@ -46,6 +45,7 @@ class GameState {
     this.gameObjects.push( new GameObjectType({
       level: this.level,
       camera: this.camera,
+      gameState: this,
       ...props
     }))
   }

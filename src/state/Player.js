@@ -1,12 +1,12 @@
-import GameObject from './GameObject'
+import GameCharacter from './GameCharacter'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
 import { action, observable } from 'mobx'
 import directions from '../shared/enum/directions'
 
 const WALK_SPEED = 3
-const JUMP_VELOCITY = 20
+const JUMP_VELOCITY = 17
 
-class Player extends GameObject {
+class Player extends GameCharacter {
 
   type = GameObjectTypes.Player
   keyState = {
@@ -15,8 +15,9 @@ class Player extends GameObject {
     left: false,
     right: false,
   }
+  attackCount = 0
 
-  animationTracks = {
+  commonAnimationTracks = {
     standing: {
       frames: [{ x: 15, y: 0 }],
       duration: 1000,
@@ -41,14 +42,18 @@ class Player extends GameObject {
       loopStartFrame: 1,
       introDuration: 100,
       duration: 400,
-    }
+    },
+    take_damage: {
+      frames: [{ x: 15, y: 300 }],
+      duration: 1000,
+    },
   }
 
   @observable 
-  spriteScale = '1300%'
+  spriteScale = '870px'
 
   @observable
-  spriteHeight = 132
+  screenHeight = 132
 
   @observable
   screenWidth = 68
@@ -66,63 +71,53 @@ class Player extends GameObject {
   onRight() {
     this.keyState.right = true
     this.velocity.x = WALK_SPEED
-    this.updateMovementAnimation()
   }
 
   @action
   offRight() {
     this.keyState.right = false
     this.velocity.x = this.keyState.left ? -WALK_SPEED : 0
-    this.updateMovementAnimation()
   }
 
   @action
   onLeft() {
     this.keyState.left = true
     this.velocity.x = -WALK_SPEED
-    this.updateMovementAnimation()
   }
 
   @action
   offLeft() {
     this.keyState.left = false
-    this.velocity.x = 0
     this.velocity.x = this.keyState.right ? WALK_SPEED : 0
-    this.updateMovementAnimation()
   }
 
   @action
   onUp() {
     this.keyState.up = true
     this.velocity.z = WALK_SPEED
-    this.updateMovementAnimation()
   }
 
   @action
   offUp() {
     this.keyState.up = false
     this.velocity.z = this.keyState.down ? -WALK_SPEED : 0
-    this.updateMovementAnimation()
   }
 
   @action
   onDown() {
     this.keyState.down = true
     this.velocity.z = -WALK_SPEED
-    this.updateMovementAnimation()
   }
 
   @action
   offDown() {
-    this.setAnimation( 'walking' )
     this.keyState.down = false
     this.velocity.z = this.keyState.up ? WALK_SPEED : 0
-    this.updateMovementAnimation()
   }
 
   @action
   onJump() {
-    if ( this.onGround ) {
+    if ( this.onGround && !this.isMovementFrozen() ) {
       this.velocity.y = JUMP_VELOCITY
       this.setAnimation( 'in_air' )
     }
@@ -131,6 +126,7 @@ class Player extends GameObject {
   @action
   onReturnToGround() {
     this.updateMovementAnimation()
+    super.onReturnToGround()
   }
 
   @action
@@ -147,8 +143,10 @@ class Player extends GameObject {
   }
 
   @action
-  step() {
-    super.step()
+  stepMovement() {
+    super.stepMovement()
+
+    this.updateMovementAnimation()
 
     // Set direction based on x-velocity.  If velocity is 0, leave direction alone (preserving the previous direction)
     if ( this.velocity.x < 0 ) {
@@ -163,6 +161,13 @@ class Player extends GameObject {
 
     //Prevent backtracking past camera
     this.position.x = Math.max( this.camera.position.x + this.camera.screenLeftEdge, this.position.x )
+  }
+
+  @action
+  onAttack() {
+    const attackAnimation = this.attackCount % 2 === 0 ? 'attack1' : 'attack2'
+    this.attack( attackAnimation, 150 )
+    this.attackCount += 1
   }
 }
 
