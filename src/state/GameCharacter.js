@@ -7,8 +7,8 @@ import directions from '../shared/enum/directions'
 const DAMAGE_FLYBACK_X = 4
 const DAMAGE_FLYBACK_Y = 5
 
-const DAMAGE_RANGE_NEAR_X = -30
-const DAMAGE_RANGE_FAR_X = 10
+const DAMAGE_RANGE_NEAR_X = 25
+const DAMAGE_RANGE_FAR_X = 30
 const DAMAGE_RANGE_Z = 15
 
 class GameCharacter extends GameObject {
@@ -45,7 +45,7 @@ class GameCharacter extends GameObject {
 
     return {
       x: { min: minX, max: maxX },
-      z: { min: this.position.z - DAMAGE_RANGE_Z, max: this.position.z - DAMAGE_RANGE_Z }
+      z: { min: this.position.z - DAMAGE_RANGE_Z, max: this.position.z + DAMAGE_RANGE_Z }
     }
   }
 
@@ -56,6 +56,9 @@ class GameCharacter extends GameObject {
     this.gameState.getGameObjectsInsideBox(attackBox).forEach( gameObject => {
       if ( gameObject !== this && gameObject.canTakeDamage && !gameObject.isDead ) {
         gameObject.takeDamage( 1, this.direction === directions.right ? directions.left : directions.right )
+        if ( gameObject.health <= 0 ) {
+          gameObject.die()
+        }
       }
     })
   }
@@ -64,7 +67,7 @@ class GameCharacter extends GameObject {
   takeDamage( damage, fromDirection ) {
     this.health -= damage
     this.clearMovementFreezes() // Clear movement freezes because the character is about to be knocked backwards
-    clearTimeout( this.attackDamageTimeout )
+    clearTimeout( this.attackDamageTimeout ) // Interrupt any in-progress attack
 
     this.setAnimation( 'take_damage' )
     this.direction = fromDirection
@@ -74,6 +77,16 @@ class GameCharacter extends GameObject {
       y: DAMAGE_FLYBACK_Y,
       z: 0
     })
+  }
+
+  @action
+  die() {
+    this.setAnimation( 'dead' )
+    this.isDead = true
+    // Increase the freefall velocity a bit
+    this.freefallVelocity.x *= 1.5
+    this.freefallVelocity.y *= 1.5
+    this.freefallVelocity.z *= 1.5
   }
 }
 

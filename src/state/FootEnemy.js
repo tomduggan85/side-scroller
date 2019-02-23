@@ -34,6 +34,20 @@ class FootEnemy extends GameCharacter {
     take_damage: {
       frames: [{ x: 52, y: 560 }],
       duration: 1000
+    },
+    dead: {
+      frames: [{ x: 140, y: 550, width: 120 }],
+      duration: 1000
+    },
+    explode: {
+      frames: [
+        { x: 400, y: 460 },
+        { x: 490, y: 450, width: 100 },
+        { x: 0, y: 0, width: 1 },
+      ], 
+      loopStartFrame: 2,
+      introDuration: 200,
+      duration: 1000,
     }
   }
 
@@ -102,15 +116,27 @@ class FootEnemy extends GameCharacter {
 
   @action
   stepMovement() {
-
     this.setAnimation( 'walking' )
-    this.moveTorwardsTargetedPlayer()
+    this.moveTowardsTargetedPlayer()
 
     if ( this.velocity.x === 0 && this.velocity.z === 0 ) {
-      //do not commit this.attack( 'attack', 250 )
+      this.attack( 'attack', 250 )
     }
 
     super.stepMovement()
+  }
+
+  @action
+  onReturnToGround() {
+    if ( this.isDead ) {
+      setTimeout( this.explode, 500 )
+    }
+    super.onReturnToGround()
+  }
+
+  @action
+  explode = () => {
+    this.setAnimation( 'explode' )
   }
 }
 

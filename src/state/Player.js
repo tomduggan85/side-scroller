@@ -44,7 +44,7 @@ class Player extends GameCharacter {
       duration: 400,
     },
     take_damage: {
-      frames: [{ x: 15, y: 300 }],
+      frames: [{ x: 25, y: 300 }],
       duration: 1000,
     },
   }

@@ -74,67 +74,39 @@ class GameObject {
     if ( this.inFreefall() ) {
       this.stepFreefall()
     }
-    else if ( !this.isMovementFrozen() ) {
+    else if ( !this.isMovementFrozen() && !this.isDead ) {
       this.stepMovement()
     }
     this.stepAnimation()
   }
 
   @action
-  stepFreefall() {
+  integrateVelocity( velocity ) {
+    //Add gravity to y-velocity, if in the air
     if ( !this.onGround ) {
-      this.freefallVelocity.y -= GRAVITY
+      velocity.y -= GRAVITY
     }
 
-    this.position.x += this.freefallVelocity.x
-    this.position.y += this.freefallVelocity.y
-    this.position.z += this.freefallVelocity.z
+    this.position.x += velocity.x
+    this.position.y += velocity.y
+    this.position.z += velocity.z
 
     //Prevent falling through the ground
-    if ( this.position.y <= 0 ) {
+    if ( this.position.y <= 0 && velocity.y < 0 ) {
       this.position.y = 0
+      velocity.y = 0
       this.onReturnToGround()
     }
   }
 
   @action
-  integrateVelocity( velocity ) {
-    //Add gravity to y-velocity, if in the air
-    if ( !this.onGround ) {
-      this.velocity.y -= GRAVITY
-    }
-
-    //Integrate velocity
-    this.position.x += this.velocity.x
-    this.position.y += this.velocity.y
-    this.position.z += this.velocity.z
-
-    //Prevent falling through the ground
-    if ( this.position.y <= 0 && this.velocity.y < 0 ) {
-      this.position.y = 0
-      this.velocity.y = 0
-      this.onReturnToGround()
-    }
+  stepFreefall() {
+    this.integrateVelocity( this.freefallVelocity )
   }
 
   @action
   stepMovement() {
-    //Add gravity to y-velocity, if in the air
-    if ( !this.onGround ) {
-      this.velocity.y -= GRAVITY
-    }
-
-    //Integrate velocity
-    this.position.x += this.velocity.x
-    this.position.y += this.velocity.y
-    this.position.z += this.velocity.z
-
-    //Prevent falling through the ground
-    if ( this.position.y <= 0 && this.velocity.y < 0 ) {
-      this.position.y = 0
-      this.velocity.y = 0
-      this.onReturnToGround()
-    }
+    this.integrateVelocity( this.velocity )
   }
 
   @action
@@ -155,7 +127,7 @@ class GameObject {
     let currentFrame
     if ( loopStartFrame ) {
       if ( now - startTime <= introDuration ) {
-        currentFrame = Math.floor(( now - startTime ) / introDuration ) * loopStartFrame
+        currentFrame = Math.floor(( now - startTime ) / introDuration  * loopStartFrame )
       }
       else {
         currentFrame = loopStartFrame + Math.floor((( now - startTime - introDuration ) / duration % 1 ) * ( frames.length - loopStartFrame ))
