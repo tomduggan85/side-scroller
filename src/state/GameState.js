@@ -1,11 +1,11 @@
 import BluePlayer from './BluePlayer'
 import OrangePlayer from './OrangePlayer'
 import Fire from './Fire'
-import FootEnemy from './FootEnemy'
 import Level from './Level'
 import Camera from './Camera'
 import { action, observable, computed } from 'mobx'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
+import EnemySpawner from './EnemySpawner'
 
 class GameState {
 
@@ -28,9 +28,8 @@ class GameState {
     //Fire
     this.addGameObject( Fire )
 
-    //Enemy
-    this.addGameObject( FootEnemy, {
-      position: { x: 20, y: 0, z: 200 },
+    this.level.enemySpawners.forEach( spawnerDef => {
+      this.addGameObject( EnemySpawner, spawnerDef )
     })
   }
 

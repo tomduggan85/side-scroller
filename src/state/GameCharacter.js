@@ -17,8 +17,12 @@ class GameCharacter extends GameObject {
   health = 2
 
   canTakeDamage = true
-
   isDead = false
+
+  constructor( props ) {
+    super( props )
+    this.onDie = props.onDie
+  }
 
   @action
   attack( animation, damageDelay ) {
@@ -87,6 +91,10 @@ class GameCharacter extends GameObject {
     this.freefallVelocity.x *= 1.5
     this.freefallVelocity.y *= 1.5
     this.freefallVelocity.z *= 1.5
+
+    if ( this.onDie ) {
+      this.onDie()
+    }
   }
 }
 

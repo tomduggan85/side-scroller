@@ -162,8 +162,11 @@ class Player extends GameCharacter {
     //Prevent walking outside of level
     this.position.z = Math.max( this.level.minZ, Math.min( this.level.maxZ, this.position.z ))
 
-    //Prevent backtracking past camera
+    //Prevent backtracking behind camera
     this.position.x = Math.max( this.camera.position.x + this.camera.screenLeftEdge, this.position.x )
+
+    //Prevent walking past camera
+    this.position.x = Math.min( this.camera.position.x + this.camera.screenRightEdge, this.position.x )
   }
 
   @action

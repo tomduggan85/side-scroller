@@ -1,6 +1,6 @@
 import React from 'react'
 import './GameRenderer.css'
-import { inject } from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 import PlayerRenderer from './PlayerRenderer'
 import GameObjectRenderer from './GameObjectRenderer'
 import LevelRenderer from './LevelRenderer'
@@ -8,6 +8,7 @@ import HUD from './HUD'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
 
 @inject( 'gameState' )
+@observer
 class GameRenderer extends React.Component {
   componentDidMount() {
     this.props.gameState.startGameLoop()

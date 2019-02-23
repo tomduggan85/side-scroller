@@ -9,10 +9,9 @@ class Camera {
     z: 0
   }
 
-  @observable
-  screenWidth = 670
-
-  @observable
+  locked = false
+  followWidth = 450
+  screenRightEdge = 710
   screenLeftEdge = 20
 
   constructor( props ) {
@@ -22,10 +21,18 @@ class Camera {
   @action
   step() {
     this.gameState.players.forEach( player => {
-      if ( player.position.x > this.position.x + this.screenWidth ) {
-        this.position.x = player.position.x - this.screenWidth
+      if ( player.position.x > this.position.x + this.followWidth && !this.locked ) {
+        this.position.x = player.position.x - this.followWidth
       }  
     })
+  }
+
+  lock() {
+    this.locked = true
+  }
+
+  unlock() {
+    this.locked = false
   }
 }
 

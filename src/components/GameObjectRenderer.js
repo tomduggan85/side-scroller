@@ -38,6 +38,10 @@ class GameObjectRenderer extends React.Component {
 
     const spriteTransform = `translate3d(0, ${ -y }px, 0) scaleX(${ directionScale })`
 
+    if ( !spriteUrl ) {
+      return null
+    }
+
     return (
       <div
         className='game-object-renderer'
