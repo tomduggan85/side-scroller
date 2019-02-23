@@ -10,7 +10,7 @@ class Camera {
   }
 
   locked = false
-  followWidth = 450
+  followWidth = 420
   screenRightEdge = 710
   screenLeftEdge = 20
 

@@ -5,7 +5,6 @@ import Level from './Level'
 import Camera from './Camera'
 import { action, observable, computed } from 'mobx'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
-import EnemySpawner from './EnemySpawner'
 
 class GameState {
 
@@ -29,7 +28,7 @@ class GameState {
     this.addGameObject( Fire )
 
     this.level.enemySpawners.forEach( spawnerDef => {
-      this.addGameObject( EnemySpawner, spawnerDef )
+      this.addGameObject( spawnerDef.spawnerType, spawnerDef )
     })
   }
 
