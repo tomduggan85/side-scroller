@@ -73,6 +73,17 @@ class GameState {
   get players() {
     return this.gameObjects.filter( g => g.type === GameObjectTypes.Player )
   }
+
+  getGameObjectsInsideBox( box ) { 
+    return this.gameObjects.filter( gameObject => {
+      return (
+        gameObject.position.x + gameObject.collisionWidth >= box.x.min &&
+        gameObject.position.x <= box.x.max &&
+        gameObject.position.z >= box.z.min &&
+        gameObject.position.z <= box.z.max // TODO add Y coords
+      )
+    })
+  }
 }
 
 export default GameState

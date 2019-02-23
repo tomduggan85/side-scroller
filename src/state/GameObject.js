@@ -26,7 +26,7 @@ class GameObject {
   }
 
   @observable
-  airborneOverrideVelocity = null
+  freefallVelocity = null
 
   @observable
   spritePosition = {
@@ -71,8 +71,8 @@ class GameObject {
 
   @action
   step() {
-    if ( this.airborneOverrideVelocity ) {
-      this.stepAirborneOverrideVelocity()
+    if ( this.inFreefall() ) {
+      this.stepFreefall()
     }
     else if ( !this.isMovementFrozen() ) {
       this.stepMovement()
@@ -81,20 +81,38 @@ class GameObject {
   }
 
   @action
-  stepAirborneOverrideVelocity() {
-    //Add gravity to y-velocity, if in the air
+  stepFreefall() {
     if ( !this.onGround ) {
-      this.airborneOverrideVelocity.y -= GRAVITY
+      this.freefallVelocity.y -= GRAVITY
     }
 
-    //Integrate velocity
-    this.position.x += this.airborneOverrideVelocity.x
-    this.position.y += this.airborneOverrideVelocity.y
-    this.position.z += this.airborneOverrideVelocity.z
+    this.position.x += this.freefallVelocity.x
+    this.position.y += this.freefallVelocity.y
+    this.position.z += this.freefallVelocity.z
 
     //Prevent falling through the ground
     if ( this.position.y <= 0 ) {
       this.position.y = 0
+      this.onReturnToGround()
+    }
+  }
+
+  @action
+  integrateVelocity( velocity ) {
+    //Add gravity to y-velocity, if in the air
+    if ( !this.onGround ) {
+      this.velocity.y -= GRAVITY
+    }
+
+    //Integrate velocity
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
+    this.position.z += this.velocity.z
+
+    //Prevent falling through the ground
+    if ( this.position.y <= 0 && this.velocity.y < 0 ) {
+      this.position.y = 0
+      this.velocity.y = 0
       this.onReturnToGround()
     }
   }
@@ -161,7 +179,7 @@ class GameObject {
 
   @action
   onReturnToGround() {
-    this.airborneOverrideVelocity = null
+    this.freefallVelocity = null
   }
 
   @action
@@ -189,8 +207,12 @@ class GameObject {
     return Object.values( this.movementFreezes ).some( frozenUntilTime => frozenUntilTime >= now )
   }
 
-  setAirborneOverrideVelocity( velocity ) {
-    this.airborneOverrideVelocity = velocity
+  setFreefall( velocity ) {
+    this.freefallVelocity = velocity
+  }
+
+  inFreefall() {
+    return !!this.freefallVelocity
   }
 }
 

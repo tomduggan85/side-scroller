@@ -58,44 +58,56 @@ class FootEnemy extends GameCharacter {
     this.targetedPlayer = this.gameState.players[0]
   }
 
-  @action
-  stepMovement() {
-
-    this.setAnimation( 'walking' )
-    let targetX;
-    const targetZ = this.targetedPlayer.position.z
-    //set direction from player
+  getTargetPosition() {
+    let x;
     if ( this.position.x < this.targetedPlayer.position.x ) {
       this.direction = directions.right
-      targetX = this.targetedPlayer.position.x - this.collisionWidth +  - TARGET_OFFSET
+      x = this.targetedPlayer.position.x - this.collisionWidth +  - TARGET_OFFSET
     }
     else if ( this.position.x > this.targetedPlayer.position.x ) {
       this.direction = directions.left
-      targetX = this.targetedPlayer.position.x + this.targetedPlayer.collisionWidth + TARGET_OFFSET
+      x = this.targetedPlayer.position.x + this.targetedPlayer.collisionWidth + TARGET_OFFSET
     }
 
-    if ( this.position.x < targetX - X_RANGE ) {
+    return {
+      x,
+      z: this.targetedPlayer.position.z
+    }
+  }
+
+  @action
+  moveTowardsTargetedPlayer() {
+    const target = this.getTargetPosition()
+
+    if ( this.position.x < target.x - X_RANGE ) {
       this.velocity.x = WALK_SPEED
     }
-    else if ( this.position.x > targetX + X_RANGE ) {
+    else if ( this.position.x > target.x + X_RANGE ) {
       this.velocity.x = -WALK_SPEED
     }
     else {
       this.velocity.x = 0
     }
 
-    if ( this.position.z < targetZ - Z_RANGE ) {
+    if ( this.position.z < target.z - Z_RANGE ) {
       this.velocity.z = WALK_SPEED
     }
-    else if ( this.position.z > targetZ + Z_RANGE ) {
+    else if ( this.position.z > target.z + Z_RANGE ) {
       this.velocity.z = -WALK_SPEED
     }
     else {
       this.velocity.z = 0
     }
+  }
+
+  @action
+  stepMovement() {
+
+    this.setAnimation( 'walking' )
+    this.moveTorwardsTargetedPlayer()
 
     if ( this.velocity.x === 0 && this.velocity.z === 0 ) {
-      this.attack( 'attack', 250 )
+      //do not commit this.attack( 'attack', 250 )
     }
 
     super.stepMovement()

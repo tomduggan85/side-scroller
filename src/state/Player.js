@@ -61,6 +61,9 @@ class Player extends GameCharacter {
   @observable
   collisionWidth = 64
 
+  @observable
+  health = 9999
+
   constructor( props ) {
     super( props )
     this.playerNumber = props.playerNumber

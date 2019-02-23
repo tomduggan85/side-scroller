@@ -18,6 +18,8 @@ class GameCharacter extends GameObject {
 
   canTakeDamage = true
 
+  isDead = false
+
   @action
   attack( animation, damageDelay ) {
     if ( !this.isMovementFrozen() && this.onGround ) {
@@ -26,48 +28,48 @@ class GameCharacter extends GameObject {
       const duration = this.animationTracks[ animation ].duration
       this.freezeMovement( duration, 'attack' )
       
-      setTimeout( this.doAttackDamage, damageDelay )
+      this.attackDamageTimeout = setTimeout( this.doAttackDamage, damageDelay )
+    }
+  }
+
+  getAttackBox = () => {
+    let minX, maxX
+
+    if ( this.direction === directions.right ) {
+      minX = this.position.x + this.collisionWidth + DAMAGE_RANGE_NEAR_X
+      maxX = this.position.x + this.collisionWidth + DAMAGE_RANGE_FAR_X
+    } else {
+      maxX = this.position.x - DAMAGE_RANGE_NEAR_X
+      minX = this.position.x - DAMAGE_RANGE_FAR_X
+    }
+
+    return {
+      x: { min: minX, max: maxX },
+      z: { min: this.position.z - DAMAGE_RANGE_Z, max: this.position.z - DAMAGE_RANGE_Z }
     }
   }
 
   @action
   doAttackDamage = () => {
-    if ( this.attacking ) { // If the attack has not been interrupted by taking damage
-      this.attacking = false
-      this.gameState.gameObjects.forEach( gameObject => {
-        if (gameObject !== this && gameObject.canTakeDamage) {
-          let minX, maxX
+    const attackBox = this.getAttackBox()
 
-          if ( this.direction === directions.right ) {
-            minX = this.position.x + this.collisionWidth + DAMAGE_RANGE_NEAR_X
-            maxX = this.position.x + this.collisionWidth + DAMAGE_RANGE_FAR_X
-          } else {
-            maxX = this.position.x - gameObject.collisionWidth - DAMAGE_RANGE_NEAR_X
-            minX = this.position.x - gameObject.collisionWidth - DAMAGE_RANGE_FAR_X
-          }
-
-          if (
-            gameObject.position.x >= minX &&
-            gameObject.position.x <= maxX &&
-            gameObject.position.z >= this.position.z - DAMAGE_RANGE_Z &&
-            gameObject.position.z <= this.position.z + DAMAGE_RANGE_Z ) {
-            gameObject.takeDamage( 1, this.direction === directions.right ? directions.left : directions.right )
-          }
-        }
-      })
-    }
+    this.gameState.getGameObjectsInsideBox(attackBox).forEach( gameObject => {
+      if ( gameObject !== this && gameObject.canTakeDamage && !gameObject.isDead ) {
+        gameObject.takeDamage( 1, this.direction === directions.right ? directions.left : directions.right )
+      }
+    })
   }
 
   @action
   takeDamage( damage, fromDirection ) {
     this.health -= damage
     this.clearMovementFreezes() // Clear movement freezes because the character is about to be knocked backwards
-    this.attacking = false // Interrupt any attack in progress
+    clearTimeout( this.attackDamageTimeout )
 
     this.setAnimation( 'take_damage' )
     this.direction = fromDirection
 
-    this.setAirborneOverrideVelocity({
+    this.setFreefall({
       x: fromDirection === directions.left ? DAMAGE_FLYBACK_X : -DAMAGE_FLYBACK_X,
       y: DAMAGE_FLYBACK_Y,
       z: 0
