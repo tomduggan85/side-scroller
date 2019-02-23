@@ -28,7 +28,17 @@ class Level {
         { position: { x: 1400, y: 0, z: 200 }, delay: 200 },
         { position: { x: 1400, y: 0, z: 250 }, delay: 400 },
       ]
-    }
+    },
+    {
+      position: { x: 0, y: 0, z: 0 },
+      triggerX: 1600,
+      enemies: [
+        { position: { x: 1200, y: 0, z: 100 }, delay: 0 },
+        { position: { x: 1200, y: 0, z: 500 }, delay: 400 },
+        { position: { x: 2000, y: 0, z: 200 }, delay: 200 },
+        { position: { x: 2000, y: 0, z: 250 }, delay: 400 },
+      ]
+    },
   ]
 }
 

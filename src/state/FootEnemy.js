@@ -2,6 +2,7 @@ import GameCharacter from './GameCharacter'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
 import { action, observable } from 'mobx'
 import directions from '../shared/enum/directions'
+import sortBy from 'lodash/sortBy'
 
 const WALK_SPEED = 2.5
 
@@ -69,7 +70,22 @@ class FootEnemy extends GameCharacter {
   constructor( props ) {
     super( props )
     this.setAnimation( 'walking' )
-    this.targetedPlayer = this.gameState.players[0]
+  }
+
+  distToMe = ( player ) => {
+    const { x, z } = this.position
+    return Math.pow( player.position.x - x, 2) + Math.pow(player.position.z - z, 2 )
+  }
+
+  updateTargetedPlayer() {
+    const playersByDistanceSquared = sortBy( this.gameState.players, this.distToMe )
+
+    if ( !this.targetedPlayer ) {
+      this.targetedPlayer = playersByDistanceSquared[0]
+    }
+    else if ( this.distToMe(this.targetedPlayer ) / this.distToMe( playersByDistanceSquared[0] ) >= 2) { //If a new target is twice as close as the existing target
+      this.targetedPlayer = playersByDistanceSquared[0]
+    }
   }
 
   getTargetPosition() {
@@ -91,6 +107,7 @@ class FootEnemy extends GameCharacter {
 
   @action
   moveTowardsTargetedPlayer() {
+    this.setAnimation( 'walking' )
     const target = this.getTargetPosition()
 
     if ( this.position.x < target.x - X_RANGE ) {
@@ -116,7 +133,7 @@ class FootEnemy extends GameCharacter {
 
   @action
   stepMovement() {
-    this.setAnimation( 'walking' )
+    this.updateTargetedPlayer()
     this.moveTowardsTargetedPlayer()
 
     if ( this.velocity.x === 0 && this.velocity.z === 0 ) {
