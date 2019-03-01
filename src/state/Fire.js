@@ -25,6 +25,9 @@ class Fire extends GameObject {
   @observable 
   screenHeight = 125
 
+  @observable
+  isForeground = true
+
   constructor( props ) {
     super( props )
     this.setAnimation( 'default' )

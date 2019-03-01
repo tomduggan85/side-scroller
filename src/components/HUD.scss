@@ -5,11 +5,12 @@
   height: 139px;
   z-index: 10000;
   background: black;
+  display: flex;
+  align-items: center;
   
   .logo {
-    position: absolute;
-    right: 40px;
-    top: 15%;
+    margin-right: 40px;
+    margin-left: auto;
     height: 70%;
   }
 }

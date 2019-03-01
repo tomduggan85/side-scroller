@@ -5,6 +5,9 @@ class OrangePlayer extends Player {
   @observable
   spriteUrl = '/assets/images/player2.png'
 
+  @observable
+  name = 'Mike'
+
   animationTracks = {
     ...this.commonAnimationTracks,
 

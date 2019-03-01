@@ -6,6 +6,8 @@ import directions from '../shared/enum/directions'
 const WALK_SPEED = 3
 const JUMP_VELOCITY = 17
 
+const JUMP_KICK_XVEL = 8
+
 class Player extends GameCharacter {
 
   type = GameObjectTypes.Player
@@ -47,6 +49,10 @@ class Player extends GameCharacter {
       frames: [{ x: 25, y: 300 }],
       duration: 1000,
     },
+    jump_kick: {
+      frames: [{ x: 740, y: 0, width: 120 }],
+      duration: 1000,
+    },
   }
 
   @observable 
@@ -60,6 +66,15 @@ class Player extends GameCharacter {
 
   @observable
   collisionWidth = 64
+
+  @observable
+  collisionHeight = 80
+
+  @observable
+  collisionBottom = 20
+
+  @observable
+  collisionDepth = 30
 
   @observable
   health = 9999
@@ -158,7 +173,12 @@ class Player extends GameCharacter {
     else if ( this.velocity.x > 0 ) {
       this.direction = directions.right
     }
+  }
 
+  @action
+  step() {
+    super.step()
+    
     //Prevent walking outside of level
     this.position.z = Math.max( this.level.minZ, Math.min( this.level.maxZ, this.position.z ))
 
@@ -170,10 +190,27 @@ class Player extends GameCharacter {
   }
 
   @action
+  jumpKick() {
+    if ( !this.isMovementFrozen() && !this.inFreefall()) {
+      this.setAnimation('jump_kick')
+      this.setFreefall({
+        x: this.direction === directions.right ? JUMP_KICK_XVEL : -JUMP_KICK_XVEL,
+        y: -2,
+        z: 0
+      }, 1)
+    }
+  }
+
+  @action
   onAttack() {
-    const attackAnimation = this.attackCount % 2 === 0 ? 'attack1' : 'attack2'
-    this.attack( attackAnimation, 150 )
-    this.attackCount += 1
+    if ( !this.onGround ) {
+      this.jumpKick()
+    }
+    else {
+      const attackAnimation = this.attackCount % 2 === 0 ? 'attack1' : 'attack2'
+      this.attack( attackAnimation, 150 )
+      this.attackCount += 1
+    }
   }
 }
 

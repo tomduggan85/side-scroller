@@ -3,6 +3,8 @@ import './GameObjectRenderer.scss'
 import { observer } from 'mobx-react'
 import directions from '../shared/enum/directions'
 
+const MAX_SCENE_ZINDEX = 9999
+
 @observer
 class GameObjectRenderer extends React.Component {
 
@@ -25,11 +27,12 @@ class GameObjectRenderer extends React.Component {
       spriteHeight,
       spriteScale,
       onGround,
+      isForeground,
     } = this.props.gameObject
 
     const directionScale = direction === directions.left ? -1 : 1
     
-    const zIndex = 9999 - z
+    const zIndex = isForeground ? MAX_SCENE_ZINDEX + 1 : MAX_SCENE_ZINDEX - Math.max( 0, z )
     const backgroundPosition = `${ -spriteX }px ${ -spriteY }px`
     const backgroundImage = `url(${ spriteUrl })`
     const backgroundSize = `${ spriteScale }`
@@ -53,6 +56,12 @@ class GameObjectRenderer extends React.Component {
         }}
       >
         <div
+          className='game-object-shadow'
+          style={{
+            display: onGround ? 'none' : 'block',
+          }}
+        />
+        <div
           className='sprite'
           style={{
             transform: spriteTransform,
@@ -63,14 +72,6 @@ class GameObjectRenderer extends React.Component {
             height: `${ spriteHeight }px`,
             left: direction === directions.right ? 0 : 'auto',
             right: direction === directions.left ? 0 : 'auto'
-          }}
-        />
-        <div
-          className='game-object-shadow'
-          style={{
-            
-            display: onGround ? 'none' : 'block',
-            zIndex,
           }}
         />
       </div>

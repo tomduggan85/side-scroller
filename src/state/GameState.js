@@ -1,6 +1,5 @@
 import BluePlayer from './BluePlayer'
 import OrangePlayer from './OrangePlayer'
-import Fire from './Fire'
 import Level from './Level'
 import Camera from './Camera'
 import { action, observable, computed } from 'mobx'
@@ -24,11 +23,14 @@ class GameState {
     //Player 2
     this.addPlayer( OrangePlayer, { x: 300, y: 0, z: 200 })
 
-    //Fire
-    this.addGameObject( Fire )
+    //Level
+    this.level.startingGameObjects.forEach( objectDef => {
+      const {
+        objectType,
+        ...props
+      } = objectDef
 
-    this.level.enemySpawners.forEach( spawnerDef => {
-      this.addGameObject( spawnerDef.spawnerType, spawnerDef )
+      this.addGameObject( objectType, props )
     })
   }
 
@@ -74,11 +76,14 @@ class GameState {
 
   getGameObjectsInsideBox( box ) { 
     return this.gameObjects.filter( gameObject => {
+      
       return (
         gameObject.position.x + gameObject.collisionWidth >= box.x.min &&
         gameObject.position.x <= box.x.max &&
+        gameObject.position.y + gameObject.collisionHeight >= box.y.min &&
+        gameObject.position.y + gameObject.collisionBottom <= box.y.max &&
         gameObject.position.z >= box.z.min &&
-        gameObject.position.z <= box.z.max // TODO add Y coords
+        gameObject.position.z <= box.z.max
       )
     })
   }

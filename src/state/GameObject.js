@@ -26,7 +26,7 @@ class GameObject {
   }
 
   @observable
-  freefallVelocity = null
+  freefall = null
 
   @observable
   spritePosition = {
@@ -51,6 +51,9 @@ class GameObject {
 
   @observable
   screenHeight = 0
+
+  @observable
+  isForeground = false
 
   animationState = {
     trackName: null,
@@ -101,7 +104,20 @@ class GameObject {
 
   @action
   stepFreefall() {
-    this.integrateVelocity( this.freefallVelocity )
+    this.integrateVelocity( this.freefall.velocity )
+    if ( this.freefall && this.freefall.damage ) {
+      const box = {
+        x: { min: this.position.x, max: this.position.x + this.collisionWidth },
+        y: { min: this.position.y + this.collisionBottom, max: this.position.y + this.collisionHeight },
+        z: { min: this.position.z - this.collisionDepth, max: this.position.z + this.collisionDepth }
+      }
+      
+      this.gameState.getGameObjectsInsideBox(box).forEach( gameObject => {
+        if ( gameObject !== this && gameObject.canTakeDamage && !gameObject.isDead ) {
+          gameObject.takeDamage( this.freefall.damage, this.position.x < gameObject.position.x ? directions.left : directions.right )
+        }
+      })
+    }
   }
 
   @action
@@ -151,7 +167,7 @@ class GameObject {
 
   @action
   onReturnToGround() {
-    this.freefallVelocity = null
+    this.freefall = null
   }
 
   @action
@@ -179,12 +195,22 @@ class GameObject {
     return Object.values( this.movementFreezes ).some( frozenUntilTime => frozenUntilTime >= now )
   }
 
-  setFreefall( velocity ) {
-    this.freefallVelocity = velocity
+  setFreefall( velocity, damage = 0 ) {
+    // Zero out any current y-velocity, since the freefall will take the object back to the ground
+    this.velocity.y = 0
+
+    this.freefall = {
+      velocity,
+      damage
+    }
   }
 
   inFreefall() {
-    return !!this.freefallVelocity
+    return !!this.freefall
+  }
+
+  stopRenderingForever() {
+    this.spriteUrl = null
   }
 }
 

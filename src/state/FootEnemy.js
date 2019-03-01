@@ -4,7 +4,7 @@ import { action, observable } from 'mobx'
 import directions from '../shared/enum/directions'
 import sortBy from 'lodash/sortBy'
 
-const WALK_SPEED = 2.5
+const WALK_SPEED = 2.4
 
 const X_RANGE = 10
 const Z_RANGE = 10
@@ -30,7 +30,7 @@ class FootEnemy extends GameCharacter {
         { x: 120, y: 402, width: 120 },
         { x: 42, y: 20 },
       ],
-      duration: 700,
+      duration: 800,
     },
     take_damage: {
       frames: [{ x: 52, y: 560 }],
@@ -66,6 +66,15 @@ class FootEnemy extends GameCharacter {
 
   @observable
   screenHeight = 132
+
+  @observable
+  collisionHeight = 90
+
+  @observable
+  collisionBottom = 20
+
+  @observable
+  collisionDepth = 30
 
   constructor( props ) {
     super( props )
@@ -137,7 +146,7 @@ class FootEnemy extends GameCharacter {
     this.moveTowardsTargetedPlayer()
 
     if ( this.velocity.x === 0 && this.velocity.z === 0 ) {
-      this.attack( 'attack', 250 )
+      this.attack( 'attack', 350 )
     }
 
     super.stepMovement()

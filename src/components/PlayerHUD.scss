@@ -1,0 +1,32 @@
+.player-hud {
+  color: #fff;
+  width: 240px;
+  height: 65px;
+  font-family: 'PressStart2P';
+  text-transform: uppercase;
+  margin-right: 20px;
+  position: relative;
+  font-size: 15px;
+
+  &:first-of-type {
+    margin-left: 20px;
+  }
+
+  background-image: url('/assets/images/player_hud.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  .name {
+    position: absolute;
+    background: #000;
+    top: 2px;
+    left: 20px;
+    padding: 3px;
+  }
+
+  .points {
+    position: absolute;
+    top: 20px;
+    right: 95px;
+  }
+}

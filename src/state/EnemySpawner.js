@@ -1,5 +1,6 @@
 import GameObject from './GameObject'
-import FootEnemy from './FootEnemy'
+
+const RESPAWN_MAX_DISTANCE = 800
 
 class EnemySpawner extends GameObject {
 
@@ -11,6 +12,7 @@ class EnemySpawner extends GameObject {
     this.triggerX = props.triggerX
     this.enemies = props.enemies
     this.locksCamera = props.locksCamera
+    this.respawnEvery = props.respawnEvery
   }
 
   stepMovement() {
@@ -27,19 +29,30 @@ class EnemySpawner extends GameObject {
   }
 
   trigger() {
-  
     this.triggered = true
-    this.enemies.forEach( enemy => {
-      setTimeout(() => this.addEnemy( enemy ), enemy.delay )
-    })
-  
+
+    this.addEnemies()
     if ( this.locksCamera ) {
       this.camera.lock()
     }
   }
 
+  playersStillCloseEnoughToRespawn() {
+    return this.gameState.players.every( player => player.position.x <= this.triggerX + RESPAWN_MAX_DISTANCE )
+  }
+
+  addEnemies = () => {
+    this.enemies.forEach( enemy => {
+      setTimeout(() => this.addEnemy( enemy ), enemy.delay )
+    })
+
+    if ( this.respawnEvery && this.playersStillCloseEnoughToRespawn() ) {
+      setTimeout( this.addEnemies, this.respawnEvery )
+    }
+  }
+
   addEnemy = ( enemy ) => {
-    this.gameState.addGameObject( FootEnemy, {
+    this.gameState.addGameObject( enemy.enemyType, {
       position: {
         x: enemy.position.x + this.position.x, 
         y: enemy.position.y + this.position.y,

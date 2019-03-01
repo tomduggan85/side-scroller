@@ -40,7 +40,7 @@ class GameRenderer extends React.Component {
             )
           })}
         </LevelRenderer>
-        <HUD />
+        <HUD players={this.props.gameState.players} />
       </div>
     )
   }

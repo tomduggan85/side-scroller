@@ -49,6 +49,7 @@ class GameCharacter extends GameObject {
 
     return {
       x: { min: minX, max: maxX },
+      y: { min: this.position.y, max: this.position.y + this.collisionHeight },
       z: { min: this.position.z - DAMAGE_RANGE_Z, max: this.position.z + DAMAGE_RANGE_Z }
     }
   }
@@ -60,18 +61,20 @@ class GameCharacter extends GameObject {
     this.gameState.getGameObjectsInsideBox(attackBox).forEach( gameObject => {
       if ( gameObject !== this && gameObject.canTakeDamage && !gameObject.isDead ) {
         gameObject.takeDamage( 1, this.direction === directions.right ? directions.left : directions.right )
-        if ( gameObject.health <= 0 ) {
-          gameObject.die()
-        }
       }
     })
   }
 
   @action
   takeDamage( damage, fromDirection ) {
+    if ( this.isCurrentlyTakingDamage ) {
+      return
+    }
+
     this.health -= damage
     this.clearMovementFreezes() // Clear movement freezes because the character is about to be knocked backwards
     clearTimeout( this.attackDamageTimeout ) // Interrupt any in-progress attack
+    this.isCurrentlyTakingDamage = true
 
     this.setAnimation( 'take_damage' )
     this.direction = fromDirection
@@ -81,6 +84,16 @@ class GameCharacter extends GameObject {
       y: DAMAGE_FLYBACK_Y,
       z: 0
     })
+
+    if ( this.health <= 0 ) {
+      this.die()
+    }
+  }
+
+  @action
+  onReturnToGround() {
+    super.onReturnToGround()
+    this.isCurrentlyTakingDamage = false // Reset currently-taking-damage flag once damage freefall completes
   }
 
   @action
@@ -88,9 +101,9 @@ class GameCharacter extends GameObject {
     this.setAnimation( 'dead' )
     this.isDead = true
     // Increase the freefall velocity a bit
-    this.freefallVelocity.x *= 1.5
-    this.freefallVelocity.y *= 1.5
-    this.freefallVelocity.z *= 1.5
+    this.freefall.velocity.x *= 1.5
+    this.freefall.velocity.y *= 1.5
+    this.freefall.velocity.z *= 1.5
 
     if ( this.onDie ) {
       this.onDie()
