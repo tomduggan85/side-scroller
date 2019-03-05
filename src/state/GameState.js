@@ -5,6 +5,8 @@ import Camera from './Camera'
 import { action, observable, computed } from 'mobx'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
 
+export const MS_FRAME_SCALE = 60 / 1000
+
 class GameState {
 
   @observable
@@ -52,6 +54,7 @@ class GameState {
 
   @action
   startGameLoop() {
+    this.lastStepTime = performance.now()
     this.stepGameLoop()
   }
 
@@ -62,9 +65,18 @@ class GameState {
 
   @action
   stepGameLoop() {
-    this.gameObjects.forEach( gameObject => gameObject.step())
+    // calculate delta time
+    const now = performance.now()
+    const deltaTime = ( now - this.lastStepTime ) || 0
+    this.lastStepTime = now
+
+    this.gameObjects.forEach( gameObject => gameObject.step( deltaTime ))
     
-    this.camera.step()
+    this.camera.step( deltaTime )
+
+    if ( this.isGameOver()) {
+      this.onGameOver()
+    }
 
     this._gameLoopRAF = requestAnimationFrame(this.stepGameLoop)
   }
@@ -72,6 +84,18 @@ class GameState {
   @computed
   get players() {
     return this.gameObjects.filter( g => g.type === GameObjectTypes.Player )
+  }
+
+  isGameOver() {
+    return this.players.length > 0 && this.players.every( p => p.isDead )
+  }
+
+  onGameOver() {
+    if ( !this.gameOverTimer ) {
+      this.gameOverTimer = setTimeout(() => {
+        window.location.reload() // For now, restart the game by reloading the page
+      }, 1500)
+    }
   }
 
   getGameObjectsInsideBox( box ) { 

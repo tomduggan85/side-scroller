@@ -2,6 +2,7 @@ import { observable, action, computed } from 'mobx'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
 import directions from '../shared/enum/directions'
 import uuid from 'uuid'
+import { MS_FRAME_SCALE } from './GameState'
 
 const GRAVITY = 0.6
 
@@ -73,26 +74,26 @@ class GameObject {
   }
 
   @action
-  step() {
+  step( deltaTime ) {
     if ( this.inFreefall() ) {
-      this.stepFreefall()
+      this.stepFreefall( deltaTime )
     }
     else if ( !this.isMovementFrozen() && !this.isDead ) {
-      this.stepMovement()
+      this.stepMovement( deltaTime )
     }
     this.stepAnimation()
   }
 
   @action
-  integrateVelocity( velocity ) {
+  integrateVelocity( velocity, deltaTime ) {
     //Add gravity to y-velocity, if in the air
     if ( !this.onGround ) {
-      velocity.y -= GRAVITY
+      velocity.y -= GRAVITY * deltaTime * MS_FRAME_SCALE
     }
 
-    this.position.x += velocity.x
-    this.position.y += velocity.y
-    this.position.z += velocity.z
+    this.position.x += velocity.x * deltaTime * MS_FRAME_SCALE
+    this.position.y += velocity.y * deltaTime * MS_FRAME_SCALE
+    this.position.z += velocity.z * deltaTime * MS_FRAME_SCALE
 
     //Prevent falling through the ground
     if ( this.position.y <= 0 && velocity.y < 0 ) {
@@ -103,8 +104,8 @@ class GameObject {
   }
 
   @action
-  stepFreefall() {
-    this.integrateVelocity( this.freefall.velocity )
+  stepFreefall( deltaTime ) {
+    this.integrateVelocity( this.freefall.velocity, deltaTime )
     if ( this.freefall && this.freefall.damage ) {
       const box = {
         x: { min: this.position.x, max: this.position.x + this.collisionWidth },
@@ -114,15 +115,15 @@ class GameObject {
       
       this.gameState.getGameObjectsInsideBox(box).forEach( gameObject => {
         if ( gameObject !== this && gameObject.canTakeDamage && !gameObject.isDead ) {
-          gameObject.takeDamage( this.freefall.damage, this.position.x < gameObject.position.x ? directions.left : directions.right )
+          gameObject.takeDamage( this.freefall.damage, this.position.x < gameObject.position.x ? directions.left : directions.right, this )
         }
       })
     }
   }
 
   @action
-  stepMovement() {
-    this.integrateVelocity( this.velocity )
+  stepMovement( deltaTime ) {
+    this.integrateVelocity( this.velocity, deltaTime )
   }
 
   @action

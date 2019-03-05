@@ -16,6 +16,12 @@ class GameCharacter extends GameObject {
   @observable
   health = 2
 
+  @observable
+  damageDealt = 0
+
+  @observable
+  kills = 0
+
   canTakeDamage = true
   isDead = false
 
@@ -60,18 +66,20 @@ class GameCharacter extends GameObject {
 
     this.gameState.getGameObjectsInsideBox(attackBox).forEach( gameObject => {
       if ( gameObject !== this && gameObject.canTakeDamage && !gameObject.isDead ) {
-        gameObject.takeDamage( 1, this.direction === directions.right ? directions.left : directions.right )
+        gameObject.takeDamage( 1, this.direction === directions.right ? directions.left : directions.right, this )
       }
     })
   }
 
   @action
-  takeDamage( damage, fromDirection ) {
+  takeDamage( damage, fromDirection, fromGameCharacter ) {
     if ( this.isCurrentlyTakingDamage ) {
       return
     }
 
     this.health -= damage
+    fromGameCharacter.damageDealt += damage
+
     this.clearMovementFreezes() // Clear movement freezes because the character is about to be knocked backwards
     clearTimeout( this.attackDamageTimeout ) // Interrupt any in-progress attack
     this.isCurrentlyTakingDamage = true
@@ -87,6 +95,7 @@ class GameCharacter extends GameObject {
 
     if ( this.health <= 0 ) {
       this.die()
+      fromGameCharacter.kills += 1
     }
   }
 

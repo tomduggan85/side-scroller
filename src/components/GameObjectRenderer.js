@@ -32,7 +32,7 @@ class GameObjectRenderer extends React.Component {
 
     const directionScale = direction === directions.left ? -1 : 1
     
-    const zIndex = isForeground ? MAX_SCENE_ZINDEX + 1 : MAX_SCENE_ZINDEX - Math.max( 0, z )
+    const zIndex = Math.floor(isForeground ? MAX_SCENE_ZINDEX + 1 : MAX_SCENE_ZINDEX - Math.max( 0, z ))
     const backgroundPosition = `${ -spriteX }px ${ -spriteY }px`
     const backgroundImage = `url(${ spriteUrl })`
     const backgroundSize = `${ spriteScale }`

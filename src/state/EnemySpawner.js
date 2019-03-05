@@ -15,7 +15,7 @@ class EnemySpawner extends GameObject {
     this.respawnEvery = props.respawnEvery
   }
 
-  stepMovement() {
+  stepMovement( deltaTime ) {
     
     this.gameState.players.forEach( player => {
       if ( player.position.x >= this.triggerX ) {
@@ -25,7 +25,7 @@ class EnemySpawner extends GameObject {
       }
     })
 
-    super.stepMovement()
+    super.stepMovement( deltaTime )
   }
 
   trigger() {

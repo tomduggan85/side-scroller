@@ -29,4 +29,20 @@
     top: 20px;
     right: 95px;
   }
+
+  .health-bar {
+    position: absolute;
+    top: 34px;
+    left: 95px;
+
+    .health {
+      width: 6px;
+      height: 12px;
+      margin-right: 2px;
+      display: inline-block;
+
+      background-image: url('/assets/images/hud_health.png');
+      background-size: 100%;
+    }
+  }
 }

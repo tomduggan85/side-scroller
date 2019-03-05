@@ -5,8 +5,9 @@ import directions from '../shared/enum/directions'
 
 const WALK_SPEED = 3
 const JUMP_VELOCITY = 17
-
 const JUMP_KICK_XVEL = 8
+
+const STARTING_HEALTH = 12
 
 class Player extends GameCharacter {
 
@@ -53,6 +54,14 @@ class Player extends GameCharacter {
       frames: [{ x: 740, y: 0, width: 120 }],
       duration: 1000,
     },
+    dead: {
+      frames: [{ x: 105, y: 300, width: 80 }],
+      duration: 1000,
+    },
+    dead_ground: {
+      frames: [{ x: 180, y: 290 }],
+      duration: 1000,
+    }
   }
 
   @observable 
@@ -77,7 +86,7 @@ class Player extends GameCharacter {
   collisionDepth = 30
 
   @observable
-  health = 9999
+  health = STARTING_HEALTH
 
   constructor( props ) {
     super( props )
@@ -155,14 +164,17 @@ class Player extends GameCharacter {
     else if ( Object.values(this.keyState).some( k => k )) {
       this.setAnimation( 'walking' )
     }
+    else if ( this.isDead ) {
+      this.setAnimation( 'dead_ground' ) 
+    }
     else {
       this.setAnimation( 'standing' ) 
     }
   }
 
   @action
-  stepMovement() {
-    super.stepMovement()
+  stepMovement( deltaTime ) {
+    super.stepMovement( deltaTime )
 
     this.updateMovementAnimation()
 
@@ -176,8 +188,8 @@ class Player extends GameCharacter {
   }
 
   @action
-  step() {
-    super.step()
+  step( deltaTime ) {
+    super.step( deltaTime )
     
     //Prevent walking outside of level
     this.position.z = Math.max( this.level.minZ, Math.min( this.level.maxZ, this.position.z ))

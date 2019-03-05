@@ -40,6 +40,15 @@ class FootEnemy extends GameCharacter {
       frames: [{ x: 140, y: 550, width: 120 }],
       duration: 1000
     },
+    jump_kick: {
+      frames: [
+        { x: 35, y: 200 },
+        { x: 170, y: 150, width: 150 },
+      ],
+      loopStartFrame: 1,
+      introDuration: 100,
+      duration: 400,
+    },
     explode: {
       frames: [
         { x: 400, y: 460 },
@@ -76,8 +85,13 @@ class FootEnemy extends GameCharacter {
   @observable
   collisionDepth = 30
 
+  longRangeAttackChance = 0.2
+
+  longRangeAttackTimeout = 1000
+
   constructor( props ) {
     super( props )
+    this.lastLongRangeAttackConsideredAt = 0
     this.setAnimation( 'walking' )
   }
 
@@ -87,9 +101,12 @@ class FootEnemy extends GameCharacter {
   }
 
   updateTargetedPlayer() {
-    const playersByDistanceSquared = sortBy( this.gameState.players, this.distToMe )
+    const playersByDistanceSquared = sortBy( this.gameState.players.filter( p => !p.isDead ), this.distToMe )
+    if ( !playersByDistanceSquared.length ) {
+      return
+    }
 
-    if ( !this.targetedPlayer ) {
+    if ( !this.targetedPlayer || this.targetedPlayer.isDead ) {
       this.targetedPlayer = playersByDistanceSquared[0]
     }
     else if ( this.distToMe(this.targetedPlayer ) / this.distToMe( playersByDistanceSquared[0] ) >= 2) { //If a new target is twice as close as the existing target
@@ -140,16 +157,47 @@ class FootEnemy extends GameCharacter {
     }
   }
 
+  shouldDoLongRangeAttack() {
+    const now = performance.now()
+    if ( this.lastLongRangeAttackConsideredAt + this.longRangeAttackTimeout < now) {
+      this.lastLongRangeAttackConsideredAt = now
+      return this.velocity.z === 0 && Math.random() <= this.longRangeAttackChance
+    }
+  }
+
+  shouldDoShortRangeAttack() {
+    return this.velocity.x === 0 && this.velocity.z === 0
+  }
+
   @action
-  stepMovement() {
+  doShortRangeAttack() {
+    this.attack( 'attack', 350 )
+  }
+
+  @action
+doLongRangeAttack() {
+    this.setAnimation('jump_kick')
+    this.setFreefall({
+      x: this.direction === directions.right ? 6 : -6,
+      y: 10,
+      z: 0
+    }, 1)
+  }
+
+  @action
+  stepMovement( deltaTime ) {
     this.updateTargetedPlayer()
     this.moveTowardsTargetedPlayer()
 
-    if ( this.velocity.x === 0 && this.velocity.z === 0 ) {
-      this.attack( 'attack', 350 )
+    // Short-range attack takes precedence over long-range attack
+    if ( this.shouldDoShortRangeAttack()) {
+      this.doShortRangeAttack()
+    }
+    else if ( this.shouldDoLongRangeAttack()) {
+      this.doLongRangeAttack()
     }
 
-    super.stepMovement()
+    super.stepMovement( deltaTime )
   }
 
   @action
