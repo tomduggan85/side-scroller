@@ -4,6 +4,9 @@ import DoorSpawner from './DoorSpawner'
 import Fire from './Fire'
 import WreckingBall from './WreckingBall'
 import FootEnemy from './FootEnemy'
+import SwordEnemy from './SwordEnemy'
+import BladeThrowerEnemy from './BladeThrowerEnemy'
+import SpearEnemy from './SpearEnemy'
 
 class Level {
 
@@ -33,7 +36,9 @@ class Level {
       position: { x: 0, y: 0, z: 0 },
       triggerX: 0,
       enemies: [
-        { position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: FootEnemy },
+        //{ position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: FootEnemy },
+        //{ position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: BladeThrowerEnemy },
+        { position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: SpearEnemy },
       ],
       locksCamera: true,
     },
@@ -50,8 +55,8 @@ class Level {
       position: { x: 1000, y: 0, z: 0 },
       triggerX: 1000,
       enemies: [
-        { position: { x: -400, y: 0, z: 50 }, delay: 300, enemyType: FootEnemy },
-        { position: { x: 400, y: 0, z: 250 }, delay: 500, enemyType: FootEnemy },
+        { position: { x: -500, y: 0, z: 50 }, delay: 300, enemyType: SwordEnemy },
+        { position: { x: 500, y: 0, z: 250 }, delay: 500, enemyType: SwordEnemy },
       ],
       locksCamera: true,
     },

@@ -43,7 +43,7 @@ class Player extends GameCharacter {
         { x: 655, y: 0 }
       ],
       loopStartFrame: 1,
-      introDuration: 100,
+      introDuration: 200,
       duration: 400,
     },
     take_damage: {

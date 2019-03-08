@@ -6,8 +6,6 @@ import sortBy from 'lodash/sortBy'
 
 const WALK_SPEED = 2.4
 
-const X_RANGE = 10
-const Z_RANGE = 10
 const TARGET_OFFSET = -10
 
 class FootEnemy extends GameCharacter {
@@ -46,7 +44,7 @@ class FootEnemy extends GameCharacter {
         { x: 170, y: 150, width: 150 },
       ],
       loopStartFrame: 1,
-      introDuration: 100,
+      introDuration: 200,
       duration: 400,
     },
     explode: {
@@ -88,6 +86,12 @@ class FootEnemy extends GameCharacter {
   longRangeAttackChance = 0.2
 
   longRangeAttackTimeout = 1000
+
+  jumpKickVelocity = { x: 6, y: 10, z: 0 }
+
+  shortAttackRange = [ 0, 10 ]
+
+  longAttackRange = [ 20, 300 ]
 
   constructor( props ) {
     super( props )
@@ -135,21 +139,22 @@ class FootEnemy extends GameCharacter {
   moveTowardsTargetedPlayer() {
     this.setAnimation( 'walking' )
     const target = this.getTargetPosition()
+    const reachedTargetBuffer = 10
 
-    if ( this.position.x < target.x - X_RANGE ) {
+    if ( this.position.x < target.x - reachedTargetBuffer ) {
       this.velocity.x = WALK_SPEED
     }
-    else if ( this.position.x > target.x + X_RANGE ) {
+    else if ( this.position.x > target.x + reachedTargetBuffer ) {
       this.velocity.x = -WALK_SPEED
     }
     else {
       this.velocity.x = 0
     }
 
-    if ( this.position.z < target.z - Z_RANGE ) {
+    if ( this.position.z < target.z - reachedTargetBuffer ) {
       this.velocity.z = WALK_SPEED
     }
-    else if ( this.position.z > target.z + Z_RANGE ) {
+    else if ( this.position.z > target.z + reachedTargetBuffer ) {
       this.velocity.z = -WALK_SPEED
     }
     else {
@@ -157,16 +162,33 @@ class FootEnemy extends GameCharacter {
     }
   }
 
+  xDistanceToTarget() {
+    return Math.abs( this.getTargetPosition().x - this.position.x )
+  }
+
   shouldDoLongRangeAttack() {
     const now = performance.now()
+    const xDistance = this.xDistanceToTarget()
     if ( this.lastLongRangeAttackConsideredAt + this.longRangeAttackTimeout < now) {
       this.lastLongRangeAttackConsideredAt = now
-      return this.velocity.z === 0 && Math.random() <= this.longRangeAttackChance
+
+      return (
+        Math.random() <= this.longRangeAttackChance &&
+        xDistance >= this.longAttackRange[ 0 ] && 
+        xDistance <= this.longAttackRange[ 1 ] && 
+        this.velocity.z === 0
+      )
     }
   }
 
   shouldDoShortRangeAttack() {
-    return this.velocity.x === 0 && this.velocity.z === 0
+    const xDistance = this.xDistanceToTarget()
+
+    return (
+      xDistance >= this.shortAttackRange[ 0 ] && 
+      xDistance <= this.shortAttackRange[ 1 ] && 
+      this.velocity.z === 0
+    )
   }
 
   @action
@@ -175,12 +197,12 @@ class FootEnemy extends GameCharacter {
   }
 
   @action
-doLongRangeAttack() {
+  doLongRangeAttack() {
     this.setAnimation('jump_kick')
     this.setFreefall({
-      x: this.direction === directions.right ? 6 : -6,
-      y: 10,
-      z: 0
+      x: this.direction === directions.right ? this.jumpKickVelocity.x : -this.jumpKickVelocity.x,
+      y: this.jumpKickVelocity.y,
+      z: this.jumpKickVelocity.z
     }, 1)
   }
 

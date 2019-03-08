@@ -1,15 +1,10 @@
 import GameCharacter from './GameCharacter'
 import { observable } from 'mobx'
-import { randomBetween } from '../shared/utils'
+import directions from '../shared/enum/directions'
 
-const X_FALLING_VEL = 3.5
-const Z_FALLING_VEL = -4
-const VEL_SPREAD = 2
-const BOUNCE_VEL = 10
+const CANCEL_GRAVITY = 0.6 // FIXME
 
-const BECOME_INVISIBLE_AT = -100
-
-class WreckingBall extends GameCharacter {
+class Projectile extends GameCharacter {
   @observable
   spriteUrl = '/assets/images/wrecking_ball.png'
 
@@ -46,32 +41,18 @@ class WreckingBall extends GameCharacter {
   constructor( props ) {
     super( props )
     this.setAnimation( 'default' )
-    this.xVel = randomBetween( X_FALLING_VEL - VEL_SPREAD, X_FALLING_VEL + VEL_SPREAD )
-    this.zVel = Z_FALLING_VEL
+    this.direction = props.direction
     this.setFreefall({
-      x: this.xVel,
+      x: this.direction === directions.right ? this.speed : -this.speed,
       y: 0,
-      z: this.zVel
-    }, 1)
-  }
-
-  onReturnToGround() {
-    super.onReturnToGround()
-    
-    // Bounce
-    this.setFreefall({
-      x: this.xVel,
-      y: BOUNCE_VEL,
-      z: this.zVel
+      z: 0
     }, 1)
   }
 
   step( deltaTime ) {
+    this.freefall.velocity.y += CANCEL_GRAVITY
     super.step( deltaTime )
-    if ( this.position.z <= BECOME_INVISIBLE_AT ) {
-      this.stopRenderingForever()
-    }
   }
 }
 
-export default WreckingBall
+export default Projectile

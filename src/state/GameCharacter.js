@@ -35,7 +35,7 @@ class GameCharacter extends GameObject {
     if ( !this.isMovementFrozen() && this.onGround ) {
       this.attacking = true
       this.setAnimation( animation )
-      const duration = this.animationTracks[ animation ].duration
+      const { duration } = this.animationTracks[ animation ]
       this.freezeMovement( duration, 'attack' )
       
       this.attackDamageTimeout = setTimeout( this.doAttackDamage, damageDelay )

@@ -23,7 +23,7 @@ class GameState {
     this.addPlayer( BluePlayer, { x: 200, y: 0, z: 100 })
     
     //Player 2
-    this.addPlayer( OrangePlayer, { x: 300, y: 0, z: 200 })
+    //this.addPlayer( OrangePlayer, { x: 300, y: 0, z: 200 })
 
     //Level
     this.level.startingGameObjects.forEach( objectDef => {
