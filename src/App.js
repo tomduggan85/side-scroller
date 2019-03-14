@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GameRenderer from './components/GameRenderer'
 import TitleScreen from './components/TitleScreen'
+import PlayerSelectScreen from './components/PlayerSelectScreen'
 import RootStore from './state/RootStore'
 import { Provider } from 'mobx-react'
 import history from './shared/history'
@@ -14,14 +15,17 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <Provider {...RootStore} >
-        <Router history={history} >
-          <Switch>
-            <Route path='/game' component={GameRenderer}/>
-            <Route component={TitleScreen} />
-          </Switch>
-        </Router>
-      </Provider>
+      <div className='App'>
+        <Provider {...RootStore} >
+          <Router history={history} >
+            <Switch>
+              <Route path='/game' component={GameRenderer}/>
+              <Route path='/player_select' component={PlayerSelectScreen}/>
+              <Route component={TitleScreen} />
+            </Switch>
+          </Router>
+        </Provider>
+      </div>
     );
   }
 }

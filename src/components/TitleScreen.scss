@@ -6,16 +6,15 @@
 }
 
 .TitleScreen {
-  margin: 0 auto;
-  width: 800px;
-  height: 600px;
-  padding-top: 50px;
+  width: 100%;
+  height: 100%;
+  padding-top: 100px;
 
   .title-image {
     height: 35%;
     width: auto;
     display: block;
-    margin: 0 auto 80px;
+    margin: 0 auto 40px;
   }
 
   .start-button-container {
@@ -31,29 +30,29 @@
       color: #fff;
       text-transform: uppercase;
       position: relative;
-      padding: 8px 0;
+      padding: 12px 0;
       font-size: 18px;
       margin-left: 40px;
+      font-weight: bold;
 
-      &:hover::before {
-        content: '';
+      .indicator {
         display: none;
         background: url('/assets/images/hover_indicator.png');
         position: absolute;
-        left: -55px;
-        top: 0;
+        left: -53px;
+        top: 6px;
         height: 30px;
         width: 40px;
         background-position: center center;
         background-size: 42px;
       }
 
-      &.selected {
+      &.selected span {
         animation: selected-button-flash 0.3s step-start infinite;
       }
 
-      &:hover:before,
-      &.selected:before {
+      &:hover .indicator,
+      &.selected .indicator {
         display: block;
       }
     }

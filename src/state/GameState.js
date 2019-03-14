@@ -6,6 +6,13 @@ import { action, observable, computed } from 'mobx'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
 import history from '../shared/history'
 import RootStore from './RootStore'
+import PlayerTypes from '../shared/enum/PlayerTypes'
+
+
+const PlayerTypesToClass = {
+  [ PlayerTypes.blue ]: BluePlayer,
+  [ PlayerTypes.orange ]: OrangePlayer,
+}
 
 export const MS_FRAME_SCALE = 60 / 1000
 
@@ -43,13 +50,13 @@ class GameState {
     this.level = new Level()
     this.camera = new Camera({ gameState: this })
 
-    //Player 1
-    this.addPlayer( BluePlayer, { x: 200, y: 0, z: 100 })
-    
-    if ( RootStore.playerSelection.playerCount > 1 ) {
-      //Player 2
-      this.addPlayer( OrangePlayer, { x: 300, y: 0, z: 200 })
-    }
+    //Players
+    const { selectedPlayerTypes } = RootStore.playerSelection
+    selectedPlayerTypes.forEach(( playerType, i ) => {
+      const x = 200 + 100 * i
+      const z = 100 + 100 * (i%2)
+      this.addPlayer( PlayerTypesToClass[ playerType ], { x, y: 0, z })
+    })
 
     //Level
     this.level.startingGameObjects.forEach( objectDef => {

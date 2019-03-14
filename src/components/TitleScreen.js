@@ -13,21 +13,15 @@ class TitleScreen extends React.Component {
     selectedOption: null,
   }
 
-  onSelectOnePlayer = () => {
-    this.setState({ selectedOption: 1 })
-    this.props.playerSelection.setPlayerCount( 1 )
-    this.gotoNextScreen()
-  }
+  onSelectOnePlayer = () => this.selectNumberOfPlayers( 1 )
 
-  onSelectTwoPlayers = () => {
-    this.setState({ selectedOption: 2 })
-    this.props.playerSelection.setPlayerCount( 2 )
-    this.gotoNextScreen()
-  }
+  onSelectTwoPlayers = () => this.selectNumberOfPlayers( 2 )
 
-  gotoNextScreen() {
+  selectNumberOfPlayers( count ) {
+    this.setState({ selectedOption: count })
+    this.props.playerSelection.setNumberOfPlayers( count )
     this.nextScreenTimeout = setTimeout(() => {
-      this.props.history.push('/game')  
+      this.props.history.push('/player_select')  
     }, NEXT_SCREEN_DELAY )
   }
 
@@ -50,13 +44,15 @@ class TitleScreen extends React.Component {
             className={classnames('start-button', {selected: selectedOption === 1})}
             onClick={this.onSelectOnePlayer}
           >
-            1 Turtle
+            <div className='indicator' />
+            <span>1 Turtle</span>
           </div>
           <div
             className={classnames('start-button', {selected: selectedOption === 2})}
             onClick={this.onSelectTwoPlayers}
           >
-            2 Turtles
+            <div className='indicator' />
+            <span>2 Turtles</span>
           </div>
         </div>
       </div>
