@@ -37,7 +37,7 @@ class Level {
       triggerX: 0,
       enemies: [
         //{ position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: FootEnemy },
-        //{ position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: BladeThrowerEnemy },
+        //{ position: { x: 800, y: 0, z: 200 }, delay: 0, enemyType: BladeThrowerEnemy },
         { position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: SpearEnemy },
       ],
       locksCamera: true,

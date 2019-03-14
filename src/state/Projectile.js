@@ -1,57 +1,38 @@
-import GameCharacter from './GameCharacter'
+import GameObject from './GameObject'
 import { observable } from 'mobx'
 import directions from '../shared/enum/directions'
 
-const CANCEL_GRAVITY = 0.6 // FIXME
 
-class Projectile extends GameCharacter {
+class Projectile extends GameObject {
+  
   @observable
-  spriteUrl = '/assets/images/wrecking_ball.png'
-
-  animationTracks = {
-    default: {
-      frames: [
-        { x: 0, y: 0 },
-      ],
-      duration: 100,
-    }
-  }
-
-  @observable 
-  spriteScale = '100%'
-
-  @observable 
-  screenWidth = 64
-
-  @observable 
-  screenHeight = 64
+  isAffectedByGravity = false
 
   @observable
-  collisionWidth = 64
+  hasShadow = false
 
-  @observable
-  collisionHeight = 64
-
-  @observable
-  collisionDepth = 40
-
-  @observable
-  collisionBottom = 0
+  lifetime = 1500
 
   constructor( props ) {
     super( props )
+    this.parentEnemy = props.parentEnemy
     this.setAnimation( 'default' )
     this.direction = props.direction
-    this.setFreefall({
-      x: this.direction === directions.right ? this.speed : -this.speed,
-      y: 0,
-      z: 0
-    }, 1)
+    this.velocity.x = this.direction === directions.right ? this.speed : -this.speed
+
+    this.lifetimeTimeout = setTimeout( this.removeFromGame, this.lifetime )
   }
 
-  step( deltaTime ) {
-    this.freefall.velocity.y += CANCEL_GRAVITY
-    super.step( deltaTime )
+  stepMovement( deltaTime ) {
+    super.stepMovement( deltaTime )
+    
+    this.gameState.getGameObjectsInsideBox( this.getBoundingBox() ).forEach( gameObject => {
+      if ( gameObject !== this && gameObject.canTakeDamage && !gameObject.isDead && gameObject !== this.parentEnemy ) {
+        gameObject.takeDamage( 1, this.position.x < gameObject.position.x ? directions.left : directions.right, this )
+        clearTimeout( this.lifetimeTimeout )
+        this.removeFromGame()
+      }
+    })
   }
 }
 

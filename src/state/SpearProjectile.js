@@ -24,7 +24,7 @@ class SpearProjectile extends Projectile {
   screenHeight = 20
 
   @observable
-  collisionWidth = 80
+  collisionWidth = 45
 
   @observable
   collisionHeight = 20

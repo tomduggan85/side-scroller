@@ -14,7 +14,8 @@ class BladeThrowerEnemy extends ThrowerEnemy {
 
   throwHeight = 65
 
-  throwOffset = 40
+  leftThrowOffset = -40
+  rightThrowOffset = 60
 
   animationTracks = {
     walking: {

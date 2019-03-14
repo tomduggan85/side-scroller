@@ -56,6 +56,12 @@ class GameObject {
   @observable
   isForeground = false
 
+  @observable
+  isAffectedByGravity = true
+
+  @observable
+  hasShadow = true
+
   animationState = {
     trackName: null,
     startTime: 0,
@@ -87,7 +93,7 @@ class GameObject {
   @action
   integrateVelocity( velocity, deltaTime ) {
     //Add gravity to y-velocity, if in the air
-    if ( !this.onGround ) {
+    if ( !this.onGround && this.isAffectedByGravity ) {
       velocity.y -= GRAVITY * deltaTime * MS_FRAME_SCALE
     }
 
@@ -107,13 +113,8 @@ class GameObject {
   stepFreefall( deltaTime ) {
     this.integrateVelocity( this.freefall.velocity, deltaTime )
     if ( this.freefall && this.freefall.damage ) {
-      const box = {
-        x: { min: this.position.x, max: this.position.x + this.collisionWidth },
-        y: { min: this.position.y + this.collisionBottom, max: this.position.y + this.collisionHeight },
-        z: { min: this.position.z - this.collisionDepth, max: this.position.z + this.collisionDepth }
-      }
       
-      this.gameState.getGameObjectsInsideBox(box).forEach( gameObject => {
+      this.gameState.getGameObjectsInsideBox( this.getBoundingBox() ).forEach( gameObject => {
         if ( gameObject !== this && gameObject.canTakeDamage && !gameObject.isDead ) {
           gameObject.takeDamage( this.freefall.damage, this.position.x < gameObject.position.x ? directions.left : directions.right, this )
         }
@@ -210,8 +211,16 @@ class GameObject {
     return !!this.freefall
   }
 
-  stopRenderingForever() {
-    this.spriteUrl = null
+  removeFromGame = () => {
+    this.gameState.removeGameObject( this )
+  }
+
+  getBoundingBox() {
+    return {
+      x: { min: this.position.x, max: this.position.x + this.collisionWidth },
+      y: { min: this.position.y + this.collisionBottom, max: this.position.y + this.collisionHeight },
+      z: { min: this.position.z - this.collisionDepth, max: this.position.z + this.collisionDepth }
+    }
   }
 }
 

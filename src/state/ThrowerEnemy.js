@@ -24,7 +24,7 @@ class ThrowerEnemy extends FootEnemy {
 
   @action
   throwProjectile = () => {
-    const xOffset = this.direction === directions.right ? this.collisionWidth + this.throwOffset : - 1.5 *this.throwOffset
+    const xOffset = this.direction === directions.right ? this.rightThrowOffset : this.leftThrowOffset
     this.gameState.addGameObject( this.projectileType, {
       position: {
         x: this.position.x + xOffset,
@@ -32,6 +32,7 @@ class ThrowerEnemy extends FootEnemy {
         z: this.position.z
       },
       direction: this.direction,
+      parentEnemy: this,
     })
   }
 

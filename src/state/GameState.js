@@ -4,6 +4,8 @@ import Level from './Level'
 import Camera from './Camera'
 import { action, observable, computed } from 'mobx'
 import GameObjectTypes from '../shared/enum/GameObjectTypes'
+import history from '../shared/history'
+import RootStore from './RootStore'
 
 export const MS_FRAME_SCALE = 60 / 1000
 
@@ -12,28 +14,10 @@ class GameState {
   @observable
   gameObjects = []
 
-  level = new Level()
-
-  camera = new Camera({ gameState: this })
+  gameObjectsToRemove = []
 
   constructor() {
     this.stepGameLoop = this.stepGameLoop.bind(this)
-    
-    //Player 1
-    this.addPlayer( BluePlayer, { x: 200, y: 0, z: 100 })
-    
-    //Player 2
-    //this.addPlayer( OrangePlayer, { x: 300, y: 0, z: 200 })
-
-    //Level
-    this.level.startingGameObjects.forEach( objectDef => {
-      const {
-        objectType,
-        ...props
-      } = objectDef
-
-      this.addGameObject( objectType, props )
-    })
   }
 
   addPlayer( PlayerType, position = { x: 0, y: 0, z: 0} ) {
@@ -50,6 +34,34 @@ class GameState {
       gameState: this,
       ...props
     }))
+  }
+
+  @action
+  beginGame() {
+    this.gameObjects = []
+    this.gameObjectsToRemove = []
+    this.level = new Level()
+    this.camera = new Camera({ gameState: this })
+
+    //Player 1
+    this.addPlayer( BluePlayer, { x: 200, y: 0, z: 100 })
+    
+    if ( RootStore.playerSelection.playerCount > 1 ) {
+      //Player 2
+      this.addPlayer( OrangePlayer, { x: 300, y: 0, z: 200 })
+    }
+
+    //Level
+    this.level.startingGameObjects.forEach( objectDef => {
+      const {
+        objectType,
+        ...props
+      } = objectDef
+
+      this.addGameObject( objectType, props )
+    })
+
+    this.startGameLoop()
   }
 
   @action
@@ -78,7 +90,21 @@ class GameState {
       this.onGameOver()
     }
 
+    this.cleanupRemovedGameObjects()
+
     this._gameLoopRAF = requestAnimationFrame(this.stepGameLoop)
+  }
+
+  removeGameObject( gameObject ) {
+    this.gameObjectsToRemove.push( gameObject.id )
+  }
+
+  cleanupRemovedGameObjects() {
+    this.gameObjectsToRemove.forEach( id => {
+      const index = this.gameObjects.findIndex( gameObject => gameObject.id === id )
+      this.gameObjects.splice(index, 1)
+    })
+    this.gameObjectsToRemove = []
   }
 
   @computed
@@ -93,7 +119,7 @@ class GameState {
   onGameOver() {
     if ( !this.gameOverTimer ) {
       this.gameOverTimer = setTimeout(() => {
-        window.location.reload() // For now, restart the game by reloading the page
+        history.push('/')
       }, 1500)
     }
   }

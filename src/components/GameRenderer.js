@@ -10,8 +10,10 @@ import GameObjectTypes from '../shared/enum/GameObjectTypes'
 @inject( 'gameState' )
 @observer
 class GameRenderer extends React.Component {
-  componentDidMount() {
-    this.props.gameState.startGameLoop()
+
+  constructor( props ) {
+    super( props )
+    this.props.gameState.beginGame()
   }
 
   componentWillUnmount() {

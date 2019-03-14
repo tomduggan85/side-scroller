@@ -28,6 +28,7 @@ class GameObjectRenderer extends React.Component {
       spriteScale,
       onGround,
       isForeground,
+      hasShadow
     } = this.props.gameObject
 
     const directionScale = direction === directions.left ? -1 : 1
@@ -55,12 +56,14 @@ class GameObjectRenderer extends React.Component {
           height: `${ screenHeight }px`,
         }}
       >
-        <div
-          className='game-object-shadow'
-          style={{
-            display: onGround ? 'none' : 'block',
-          }}
-        />
+        {hasShadow && (
+          <div
+            className='game-object-shadow'
+            style={{
+              display: onGround ? 'none' : 'block',
+            }}
+          />
+        )}
         <div
           className='sprite'
           style={{

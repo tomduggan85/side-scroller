@@ -14,7 +14,8 @@ class SpearEnemy extends ThrowerEnemy {
 
   throwHeight = 80
 
-  throwOffset = 50
+  leftThrowOffset = -40
+  rightThrowOffset = 60
 
   animationTracks = {
     walking: {

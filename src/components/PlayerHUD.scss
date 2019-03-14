@@ -1,12 +1,12 @@
 .player-hud {
   color: #fff;
-  width: 240px;
+  width: 210px;
   height: 65px;
-  font-family: 'PressStart2P';
   text-transform: uppercase;
   margin-right: 20px;
   position: relative;
   font-size: 15px;
+  flex-shrink: 0;
 
   &:first-of-type {
     margin-left: 20px;

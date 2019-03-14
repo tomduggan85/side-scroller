@@ -1,0 +1,61 @@
+
+@keyframes selected-button-flash {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.TitleScreen {
+  margin: 0 auto;
+  width: 800px;
+  height: 600px;
+  padding-top: 50px;
+
+  .title-image {
+    height: 35%;
+    width: auto;
+    display: block;
+    margin: 0 auto 80px;
+  }
+
+  .start-button-container {
+    width: 250px;
+    margin: 0 auto;
+
+    a {
+      text-decoration: none;
+    }
+
+    .start-button {
+      cursor: pointer;
+      color: #fff;
+      text-transform: uppercase;
+      position: relative;
+      padding: 8px 0;
+      font-size: 18px;
+      margin-left: 40px;
+
+      &:hover::before {
+        content: '';
+        display: none;
+        background: url('/assets/images/hover_indicator.png');
+        position: absolute;
+        left: -55px;
+        top: 0;
+        height: 30px;
+        width: 40px;
+        background-position: center center;
+        background-size: 42px;
+      }
+
+      &.selected {
+        animation: selected-button-flash 0.3s step-start infinite;
+      }
+
+      &:hover:before,
+      &.selected:before {
+        display: block;
+      }
+    }
+  }
+}

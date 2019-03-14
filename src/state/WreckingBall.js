@@ -1,4 +1,4 @@
-import GameCharacter from './GameCharacter'
+import GameObject from './GameObject'
 import { observable } from 'mobx'
 import { randomBetween } from '../shared/utils'
 
@@ -9,7 +9,7 @@ const BOUNCE_VEL = 10
 
 const BECOME_INVISIBLE_AT = -100
 
-class WreckingBall extends GameCharacter {
+class WreckingBall extends GameObject {
   @observable
   spriteUrl = '/assets/images/wrecking_ball.png'
 
@@ -69,7 +69,7 @@ class WreckingBall extends GameCharacter {
   step( deltaTime ) {
     super.step( deltaTime )
     if ( this.position.z <= BECOME_INVISIBLE_AT ) {
-      this.stopRenderingForever()
+      this.removeFromGame()
     }
   }
 }

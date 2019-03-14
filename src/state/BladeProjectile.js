@@ -24,7 +24,7 @@ class BladeProjectile extends Projectile {
   screenHeight = 30
 
   @observable
-  collisionWidth = 40
+  collisionWidth = 25
 
   @observable
   collisionHeight = 30
@@ -36,7 +36,7 @@ class BladeProjectile extends Projectile {
   collisionBottom = 0
 
   @observable
-  speed = 8
+  speed = 9
 }
 
 export default BladeProjectile
