@@ -10,7 +10,6 @@ class PlayerHUD extends React.Component {
     const {
       name,
       health,
-      damageDealt,
       kills
     } = this.props.player
 

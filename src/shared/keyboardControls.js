@@ -1,11 +1,11 @@
 export default [
-  { /* WASD keys, spacebar attack, shift jump */
+  { /* WASD keys, spacebar jump, shift attack */
     left: 65,
     right: 68,
     up: 87,
     down: 83,
-    jump: 16,
-    attack: 32,
+    jump: 32,
+    attack: 16,
   },
   { /* Arrow keys */
     left: 37,

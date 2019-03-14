@@ -23,6 +23,16 @@ class Level {
     { objectType: Fire },
     {
       objectType: EnemySpawner,
+      position: { x: 0, y: 0, z: 0 },
+      triggerX: 0,
+      enemies: [
+        { position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: FootEnemy },
+        { position: { x: 800, y: 0, z: 200 }, delay: 0, enemyType: BladeThrowerEnemy },
+      ],
+      locksCamera: true,
+    },
+    {
+      objectType: EnemySpawner,
       position: { x: 1400, y: 0, z: 200 },
       triggerX: 1350,
       enemies: [
@@ -30,17 +40,6 @@ class Level {
         { position: { x: -120, y: 100, z: 125 }, delay: 200, enemyType: WreckingBall },
       ],
       respawnEvery: 2200,
-    },
-    {
-      objectType: EnemySpawner,
-      position: { x: 0, y: 0, z: 0 },
-      triggerX: 0,
-      enemies: [
-        //{ position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: FootEnemy },
-        //{ position: { x: 800, y: 0, z: 200 }, delay: 0, enemyType: BladeThrowerEnemy },
-        { position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: SpearEnemy },
-      ],
-      locksCamera: true,
     },
     {
       objectType: DoorSpawner,
@@ -66,8 +65,8 @@ class Level {
       triggerX: 1600,
       enemies: [
         { position: { x: -400, y: 0, z: 100 }, delay: 0, enemyType: FootEnemy },
-        { position: { x: -400, y: 0, z: 300 }, delay: 400, enemyType: FootEnemy },
-        { position: { x: 400, y: 0, z: 200 }, delay: 200, enemyType: FootEnemy },
+        { position: { x: -400, y: 0, z: 300 }, delay: 400, enemyType: SpearEnemy },
+        { position: { x: 400, y: 0, z: 200 }, delay: 200, enemyType: SpearEnemy },
         { position: { x: 400, y: 0, z: 250 }, delay: 400, enemyType: FootEnemy },
       ],
       locksCamera: true,

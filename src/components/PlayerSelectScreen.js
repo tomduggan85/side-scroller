@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react'
 import classnames from 'classnames'
 import PlayerTypes from '../shared/enum/PlayerTypes'
 
-const NEXT_DELAY = 1500
+const NEXT_DELAY = 2200
 
 @inject( 'playerSelection' )
 @observer
@@ -57,11 +57,11 @@ class PlayerSelectScreen extends React.Component {
 
         <div className='player-types'>
           {Object.values( PlayerTypes ).map( playerType => {
-            const isSelected = selectedPlayerTypes[ currentlySelectingFor ] === playerType
+            const selected = selectedPlayerTypes[ currentlySelectingFor ] === playerType
 
             return (
               <div
-                className={classnames('player-type', { isSelected })}
+                className={classnames('player-type', { selected })}
                 onClick={() => this.selectPlayerType( playerType )}
                 key={playerType}
               >
