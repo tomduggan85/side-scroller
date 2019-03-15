@@ -220,7 +220,7 @@ class Player extends GameCharacter {
     }
     else {
       const attackAnimation = this.attackCount % 2 === 0 ? 'attack1' : 'attack2'
-      this.attack( attackAnimation, 150 )
+      this.attack( attackAnimation, 80 )
       this.attackCount += 1
     }
   }

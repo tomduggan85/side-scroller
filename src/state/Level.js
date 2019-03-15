@@ -6,6 +6,7 @@ import WreckingBall from './WreckingBall'
 import FootEnemy from './FootEnemy'
 import SwordEnemy from './SwordEnemy'
 import BladeThrowerEnemy from './BladeThrowerEnemy'
+import ElevatorSpawner from './ElevatorSpawner'
 import SpearEnemy from './SpearEnemy'
 
 class Level {
@@ -19,6 +20,8 @@ class Level {
   @observable
   maxZ = 260
 
+  maxCamPosition = 3700
+
   startingGameObjects = [
     { objectType: Fire },
     {
@@ -27,7 +30,7 @@ class Level {
       triggerX: 0,
       enemies: [
         { position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: FootEnemy },
-        { position: { x: 800, y: 0, z: 200 }, delay: 0, enemyType: BladeThrowerEnemy },
+        { position: { x: 800, y: 0, z: 200 }, delay: 0, enemyType: FootEnemy },
       ],
       locksCamera: true,
     },
@@ -66,8 +69,8 @@ class Level {
       enemies: [
         { position: { x: -400, y: 0, z: 100 }, delay: 0, enemyType: FootEnemy },
         { position: { x: -400, y: 0, z: 300 }, delay: 400, enemyType: SpearEnemy },
-        { position: { x: 400, y: 0, z: 200 }, delay: 200, enemyType: SpearEnemy },
-        { position: { x: 400, y: 0, z: 250 }, delay: 400, enemyType: FootEnemy },
+        { position: { x: 400, y: 0, z: 200 }, delay: 200, enemyType: FootEnemy },
+        { position: { x: 400, y: 0, z: 250 }, delay: 400, enemyType: BladeThrowerEnemy },
       ],
       locksCamera: true,
     },
@@ -93,10 +96,34 @@ class Level {
     {
       objectType: DoorSpawner,
       position: { x: 2946, y: 0, z: 283 },
-      triggerX: 2946,
+      triggerX: 3200,
       enemies: [
         { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
         { position: { x: 30, y: 0, z: -5 }, delay: 700, enemyType: FootEnemy },
+      ]
+    },
+    {
+      objectType: DoorSpawner,
+      position: { x: 3268, y: 0, z: 283 },
+      triggerX: 3200,
+      enemies: [
+        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: SpearEnemy },
+      ]
+    },
+    {
+      objectType: ElevatorSpawner,
+      position: { x: 3594, y: 0, z: 280 },
+      triggerX: 3700,
+      enemies: [
+        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: SwordEnemy },
+      ]
+    },
+    {
+      objectType: ElevatorSpawner,
+      position: { x: 3915, y: 0, z: 280 },
+      triggerX: 3700,
+      enemies: [
+        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: SwordEnemy },
       ]
     },
   ]

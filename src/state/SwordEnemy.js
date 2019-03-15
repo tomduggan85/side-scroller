@@ -3,9 +3,9 @@ import FootEnemy from './FootEnemy'
 class SwordEnemy extends FootEnemy {
   longRangeAttackChance = 0.6
 
-  longRangeAttackTimeout = 1000
+  longRangeAttackTimeout = 2000
 
-  jumpKickVelocity = { x: 6, y: 12, z: 0 }
+  jumpKickVelocity = { x: 4, y: 16, z: 0 }
 
   shortAttackRange = [ 0, 10 ]
 

@@ -83,9 +83,9 @@ class FootEnemy extends GameCharacter {
   @observable
   collisionDepth = 30
 
-  longRangeAttackChance = 0.2
+  longRangeAttackChance = 0.15
 
-  longRangeAttackTimeout = 1000
+  longRangeAttackTimeout = 2000
 
   jumpKickVelocity = { x: 6, y: 10, z: 0 }
 
