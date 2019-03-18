@@ -3,13 +3,13 @@
   width: 210px;
   height: 65px;
   text-transform: uppercase;
-  margin-right: 20px;
+  margin-right: 3px;
   position: relative;
   font-size: 15px;
   flex-shrink: 0;
 
   &:first-of-type {
-    margin-left: 20px;
+    margin-left: 3px;
   }
 
   background-image: url('/assets/images/player_hud.png');

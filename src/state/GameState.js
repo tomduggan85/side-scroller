@@ -53,7 +53,7 @@ class GameState {
     //Players
     const { selectedPlayerTypes } = RootStore.playerSelection
     selectedPlayerTypes.forEach(( playerType, i ) => {
-      const x = 200 + 100 * i
+      const x = 350 + 100 * i
       const z = 100 + 100 * (i%2)
       this.addPlayer( PlayerTypesToClass[ playerType ], { x, y: 0, z })
     })

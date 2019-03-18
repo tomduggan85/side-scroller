@@ -11,8 +11,8 @@ class Camera {
   }
 
   locked = false
-  followWidth = 420
-  screenRightEdge = 710
+  followWidth = 370
+  screenRightEdge = 610
   screenLeftEdge = 20
 
   constructor( props ) {

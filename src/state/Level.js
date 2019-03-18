@@ -20,7 +20,7 @@ class Level {
   @observable
   maxZ = 260
 
-  maxCamPosition = 3700
+  maxCamPosition = 3795
 
   startingGameObjects = [
     { objectType: Fire },
@@ -29,64 +29,127 @@ class Level {
       position: { x: 0, y: 0, z: 0 },
       triggerX: 0,
       enemies: [
-        { position: { x: -100, y: 0, z: 200 }, delay: 0, enemyType: FootEnemy },
-        { position: { x: 800, y: 0, z: 200 }, delay: 0, enemyType: FootEnemy },
+        { position: { x: -80, y: 0, z: 250 }, delay: 0, enemyType: FootEnemy },
+      ],
+      locksCamera: true,
+    },
+    {
+      objectType: EnemySpawner,
+      position: { x: 620, y: 0, z: 0 },
+      triggerX: 620-370,
+      enemies: [
+        { position: { x: -450, y: 0, z: 250 }, delay: 0, enemyType: FootEnemy },
+        { position: { x: 320, y: 0, z: 150 }, delay: 1000, enemyType: FootEnemy },
+        { position: { x: 320, y: 0, z: 100 }, delay: 2000, enemyType: FootEnemy },
+        { position: { x: 320, y: 0, z: 250 }, delay: 5000, enemyType: FootEnemy },
+      ],
+      locksCamera: true,
+    },
+    {
+      objectType: EnemySpawner,
+      position: { x: 880, y: 0, z: 0 },
+      triggerX: 880-370,
+      enemies: [
+        { position: { x: -550, y: 0, z: 250 }, delay: 0, enemyType: FootEnemy },
+        { position: { x: -550, y: 0, z: 250 }, delay: 1000, enemyType: FootEnemy },
+        { position: { x: 300, y: 0, z: 250 }, delay: 2000, enemyType: FootEnemy },
+        { position: { x: -550, y: 0, z: 250 }, delay: 5000, enemyType: FootEnemy },
+      ],
+      locksCamera: true,
+    },
+    {
+      objectType: DoorSpawner,
+      position: { x: 1018, y: 0, z: 283 },
+      triggerX: 1050-370,
+      enemies: [
+        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
+      ]
+    },
+    {
+      objectType: EnemySpawner,
+      position: { x: 1050, y: 0, z: 0 },
+      triggerX: 1050-370,
+      enemies: [
+        { position: { x: -500, y: 0, z: 200 }, delay: 1000, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: 200 }, delay: 1500, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: 250 }, delay: 5000, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: 200 }, delay: 6500, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: 100 }, delay: 800, enemyType: FootEnemy },
+        { position: { x: -500, y: 0, z: 250 }, delay: 11000, enemyType: FootEnemy },
+        { position: { x: -500, y: 0, z: 150 }, delay: 12000, enemyType: FootEnemy },
       ],
       locksCamera: true,
     },
     {
       objectType: EnemySpawner,
       position: { x: 1400, y: 0, z: 200 },
-      triggerX: 1350,
+      triggerX: 1300-370,
       enemies: [
         { position: { x: -100, y: 100, z: 120 }, delay: 0, enemyType: WreckingBall },
         { position: { x: -120, y: 100, z: 125 }, delay: 200, enemyType: WreckingBall },
       ],
-      respawnEvery: 2200,
-    },
-    {
-      objectType: DoorSpawner,
-      position: { x: 1018, y: 0, z: 283 },
-      triggerX: 1000,
-      enemies: [
-        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
-      ]
+      respawnEvery: 2400,
     },
     {
       objectType: EnemySpawner,
-      position: { x: 1000, y: 0, z: 0 },
-      triggerX: 1000,
+      position: { x: 1400, y: 0, z: 0 },
+      triggerX: 1300-370,
       enemies: [
-        { position: { x: -500, y: 0, z: 50 }, delay: 300, enemyType: SwordEnemy },
-        { position: { x: 500, y: 0, z: 250 }, delay: 500, enemyType: SwordEnemy },
+        { position: { x: -500, y: 0, z: 220 }, delay: 400, enemyType: BladeThrowerEnemy },
+        { position: { x: -500, y: 0, z: 80 }, delay: 1400, enemyType: BladeThrowerEnemy },
       ],
       locksCamera: true,
     },
     {
       objectType: EnemySpawner,
-      position: { x: 1600, y: 0, z: 0 },
-      triggerX: 1600,
+      position: { x: 1550, y: 0, z: 0 },
+      triggerX: 1550-370,
       enemies: [
-        { position: { x: -400, y: 0, z: 100 }, delay: 0, enemyType: FootEnemy },
-        { position: { x: -400, y: 0, z: 300 }, delay: 400, enemyType: SpearEnemy },
-        { position: { x: 400, y: 0, z: 200 }, delay: 200, enemyType: FootEnemy },
-        { position: { x: 400, y: 0, z: 250 }, delay: 400, enemyType: BladeThrowerEnemy },
+        { position: { x: -500, y: 0, z: 220 }, delay: 400, enemyType: BladeThrowerEnemy },
+        { position: { x: -500, y: 0, z: 80 }, delay: 1400, enemyType: BladeThrowerEnemy },
+        { position: { x: 500, y: 0, z: 80 }, delay: 3000, enemyType: BladeThrowerEnemy },
       ],
       locksCamera: true,
     },
     {
       objectType: DoorSpawner,
       position: { x: 1983, y: 0, z: 283 },
-      triggerX: 1983,
+      triggerX: 2050-370,
       enemies: [
         { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
-        { position: { x: 30, y: 0, z: -5 }, delay: 700, enemyType: FootEnemy },
       ]
     },
     {
       objectType: EnemySpawner,
+      position: { x: 2050, y: 0, z: 0 },
+      triggerX: 2050-370,
+      enemies: [
+        { position: { x: 500, y: 0, z: 240 }, delay: 1000, enemyType: FootEnemy },
+        { position: { x: -500, y: 0, z: 240 }, delay: 2000, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: 150 }, delay: 6000, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: 50 }, delay: 7000, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: 250 }, delay: 11000, enemyType: FootEnemy },
+      ],
+      locksCamera: true,
+    },
+    {
+      objectType: EnemySpawner,
+      position: { x: 2200, y: 0, z: 0 },
+      triggerX: 2200-370,
+      enemies: [
+        { position: { x: 400, y: 0, z: 0 }, delay: 0, enemyType: FootEnemy },
+        { position: { x: -500, y: 0, z: 200 }, delay: 15000, enemyType: FootEnemy },
+        { position: { x: -500, y: 0, z: 240 }, delay: 2500, enemyType: FootEnemy },
+        { position: { x: -500, y: 0, z: 240 }, delay: 5500, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: 10 }, delay: 8500, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: 10 }, delay: 11500, enemyType: FootEnemy },
+      ],
+      locksCamera: true,
+    },
+    {
+      objectType: EnemySpawner,
       position: { x: 2700, y: 0, z: 200 },
-      triggerX: 2650,
+      triggerX: 2650-370,
       enemies: [
         { position: { x: -100, y: 100, z: 120 }, delay: 0, enemyType: WreckingBall },
         { position: { x: -120, y: 100, z: 125 }, delay: 200, enemyType: WreckingBall },
@@ -94,37 +157,108 @@ class Level {
       respawnEvery: 2200,
     },
     {
+      objectType: EnemySpawner,
+      position: { x: 2700, y: 0, z: 0 },
+      triggerX: 2650-370,
+      enemies: [
+        { position: { x: -500, y: 0, z: 220 }, delay: 400, enemyType: BladeThrowerEnemy },
+        { position: { x: -500, y: 0, z: 80 }, delay: 1400, enemyType: BladeThrowerEnemy },
+      ],
+      locksCamera: true,
+    },
+    {
+      objectType: EnemySpawner,
+      position: { x: 2850, y: 0, z: 0 },
+      triggerX: 2850-370,
+      enemies: [
+        { position: { x: 400, y: 0, z: 20 }, delay: 400, enemyType: BladeThrowerEnemy },
+        { position: { x: -500, y: 0, z: 240 }, delay: 1400, enemyType: BladeThrowerEnemy },
+        { position: { x: -500, y: 0, z: 80 }, delay: 3500, enemyType: BladeThrowerEnemy },
+        { position: { x: 400, y: 0, z: 240 }, delay: 5000, enemyType: BladeThrowerEnemy },
+      ],
+      locksCamera: true,
+    },
+    {
       objectType: DoorSpawner,
       position: { x: 2946, y: 0, z: 283 },
-      triggerX: 3200,
+      triggerX: 3150-370,
       enemies: [
         { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
-        { position: { x: 30, y: 0, z: -5 }, delay: 700, enemyType: FootEnemy },
-      ]
+        { position: { x: 500, y: 0, z: -25 }, delay: 1000, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: -25 }, delay: 1500, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: -225 }, delay: 5500, enemyType: FootEnemy },
+        { position: { x: 500, y: 0, z: -25 }, delay: 7000, enemyType: FootEnemy },
+      ],
+      locksCamera: true
     },
     {
       objectType: DoorSpawner,
       position: { x: 3268, y: 0, z: 283 },
-      triggerX: 3200,
+      triggerX: 3300-370,
       enemies: [
-        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: SpearEnemy },
-      ]
+        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
+        { position: { x: 700, y: 0, z: -25 }, delay: 1000, enemyType: FootEnemy },
+        { position: { x: -450, y: 0, z: -25 }, delay: 2000, enemyType: FootEnemy },
+        { position: { x: 700, y: 0, z: -25 }, delay: 5000, enemyType: FootEnemy },
+      ],
+      locksCamera: true
+    },
+    {
+      objectType: EnemySpawner,
+      position: { x: 3500, y: 0, z: 0 },
+      triggerX: 3500-370,
+      enemies: [
+        { position: { x: -500, y: 0, z: 240 }, delay: 0, enemyType: SwordEnemy },
+        { position: { x: -500, y: 0, z: 240 }, delay: 500, enemyType: SwordEnemy },
+        { position: { x: 500, y: 0, z: 240 }, delay: 1000, enemyType: SwordEnemy },
+        { position: { x: 500, y: 0, z: 240 }, delay: 4000, enemyType: SwordEnemy },
+        { position: { x: 500, y: 0, z: 240 }, delay: 6500, enemyType: SwordEnemy },
+        { position: { x: 500, y: 0, z: 40 }, delay: 9500, enemyType: SwordEnemy },
+        { position: { x: -400, y: 0, z: 240 }, delay: 11000, enemyType: SwordEnemy },
+      ],
+      locksCamera: true,
     },
     {
       objectType: ElevatorSpawner,
       position: { x: 3594, y: 0, z: 280 },
-      triggerX: 3700,
-      enemies: [
-        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: SwordEnemy },
-      ]
+      triggerX: 3850-370,
+      enemies: []
     },
     {
       objectType: ElevatorSpawner,
       position: { x: 3915, y: 0, z: 280 },
-      triggerX: 3700,
+      triggerX: 3850-370,
       enemies: [
-        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: SwordEnemy },
-      ]
+        { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
+        { position: { x: -305, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
+      ],
+      locksCamera: true
+    },
+    {
+      objectType: EnemySpawner,
+      position: { x: 3950, y: 0, z: 0 },
+      triggerX: 3950-370,
+      enemies: [
+        { position: { x: -500, y: 0, z: 50 }, delay: 0, enemyType: FootEnemy },
+        { position: { x: 400, y: 0, z: 240 }, delay: 800, enemyType: FootEnemy },
+        { position: { x: 400, y: 0, z: 220 }, delay: 1300, enemyType: FootEnemy },
+        { position: { x: 400, y: 0, z: 240 }, delay: 3000, enemyType: FootEnemy },
+      ],
+      locksCamera: true,
+    },
+    {
+      objectType: EnemySpawner,
+      position: { x: 4100, y: 0, z: 0 },
+      triggerX: 4100-370,
+      enemies: [
+        { position: { x: -500, y: 0, z: 50 }, delay: 0, enemyType: SpearEnemy },
+        { position: { x: -500, y: 0, z: 250 }, delay: 250, enemyType: SpearEnemy },
+        { position: { x: -500, y: 0, z: 50 }, delay: 3000, enemyType: SwordEnemy },
+        { position: { x: -500, y: 0, z: 250 }, delay: 4000, enemyType: SwordEnemy },
+        { position: { x: -500, y: 0, z: 50 }, delay: 5000, enemyType: SwordEnemy },
+        { position: { x: -500, y: 0, z: 50 }, delay: 7500, enemyType: SpearEnemy },
+        { position: { x: -500, y: 0, z: 250 }, delay: 8500, enemyType: SpearEnemy },
+      ],
     },
   ]
 }

@@ -17,14 +17,12 @@ class EnemySpawner extends GameObject {
 
   stepMovement( deltaTime ) {
     
-    this.gameState.players.forEach( player => {
-      if ( player.position.x >= this.triggerX ) {
-        if ( !this.triggered ) {
-          this.trigger()
-        }
+    if ( this.camera.position.x >= this.triggerX ) {
+      if ( !this.triggered ) {
+        this.trigger()
       }
-    })
-
+    }
+ 
     super.stepMovement( deltaTime )
   }
 

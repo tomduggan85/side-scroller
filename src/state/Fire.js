@@ -28,6 +28,13 @@ class Fire extends GameObject {
   @observable
   isForeground = true
 
+  @observable
+  position = {
+    x: 0,
+    y: 0,
+    z: -10,
+  }
+
   constructor( props ) {
     super( props )
     this.setAnimation( 'default' )
