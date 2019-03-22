@@ -12,7 +12,7 @@
     margin-left: 3px;
   }
 
-  background-image: url('/assets/images/player_hud.png');
+  background-image: url('/assets/images/ui/player_hud.png');
   background-size: contain;
   background-repeat: no-repeat;
 
@@ -41,7 +41,7 @@
       margin-right: 2px;
       display: inline-block;
 
-      background-image: url('/assets/images/hud_health.png');
+      background-image: url('/assets/images/ui/hud_health.png');
       background-size: 100%;
     }
   }

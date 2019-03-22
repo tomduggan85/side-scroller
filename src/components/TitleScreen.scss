@@ -37,7 +37,7 @@
 
       .indicator {
         display: none;
-        background: url('/assets/images/hover_indicator.png');
+        background: url('/assets/images/ui/hover_indicator.png');
         position: absolute;
         left: -53px;
         top: 6px;
@@ -55,6 +55,30 @@
       &.selected .indicator {
         display: block;
       }
+    }
+  }
+}
+
+
+.instructions {
+  color: #fff;
+  text-align: center;
+  margin-top: 50px;
+  cursor: default;
+
+  .instructions-text {
+    display: none;
+    font-size: 11px;
+    line-height: 1.5em;
+  }
+
+  &:hover {
+    .hover-hint {
+      display: none;
+    }
+
+    .instructions-text {
+      display: block;
     }
   }
 }

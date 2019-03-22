@@ -3,7 +3,7 @@ import { observable } from 'mobx'
 
 class SpearProjectile extends Projectile {
   @observable
-  spriteUrl = '/assets/images/enemy.png'
+  spriteUrl = '/assets/images/gameObjects/enemy.png'
 
   animationTracks = {
     default: {

@@ -127,7 +127,7 @@ class GameState {
     if ( !this.gameOverTimer ) {
       this.gameOverTimer = setTimeout(() => {
         history.push('/')
-      }, 1500)
+      }, 2500)
     }
   }
 

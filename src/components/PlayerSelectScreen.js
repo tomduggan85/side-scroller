@@ -67,12 +67,12 @@ class PlayerSelectScreen extends React.Component {
               >
                 <img
                   className='player-image'
-                  src={`/assets/images/${ playerType }_player_select.png`}
+                  src={`/assets/images/ui/${ playerType }_player_select.png`}
                   alt={playerType}
                 />
                 <img
                   className='indicator'
-                  src={`/assets/images/select_indicator_${ currentlySelectingFor }.png`}
+                  src={`/assets/images/ui/select_indicator_${ currentlySelectingFor }.png`}
                   alt=''
                 />
               </div>

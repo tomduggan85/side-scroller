@@ -3,7 +3,7 @@ import { observable } from 'mobx'
 
 class Fire extends GameObject {
   @observable
-  spriteUrl = '/assets/images/fire.png'
+  spriteUrl = '/assets/images/gameObjects/fire.png'
 
   animationTracks = {
     default: {

@@ -10,7 +10,7 @@ class HUD extends React.Component {
         { players.map( player => <PlayerHUD key={player.id} player={player} />)}
         <img
           className='logo'
-          src='/assets/images/hud_logo.png'
+          src='/assets/images/ui/hud_logo.png'
           alt='logo'
         />
       </div>

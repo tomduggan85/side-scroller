@@ -63,7 +63,7 @@ class FootEnemy extends GameCharacter {
   spriteScale = '3200px'
 
   @observable
-  spriteUrl = '/assets/images/enemy.png'
+  spriteUrl = '/assets/images/gameObjects/enemy.png'
 
   @observable
   collisionWidth = 64

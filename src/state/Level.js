@@ -36,7 +36,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 620, y: 0, z: 0 },
-      triggerX: 620-370,
+      triggerX: 250,
       enemies: [
         { position: { x: -450, y: 0, z: 250 }, delay: 0, enemyType: FootEnemy },
         { position: { x: 320, y: 0, z: 150 }, delay: 1000, enemyType: FootEnemy },
@@ -48,7 +48,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 880, y: 0, z: 0 },
-      triggerX: 880-370,
+      triggerX: 510,
       enemies: [
         { position: { x: -550, y: 0, z: 250 }, delay: 0, enemyType: FootEnemy },
         { position: { x: -550, y: 0, z: 250 }, delay: 1000, enemyType: FootEnemy },
@@ -60,7 +60,7 @@ class Level {
     {
       objectType: DoorSpawner,
       position: { x: 1018, y: 0, z: 283 },
-      triggerX: 1050-370,
+      triggerX: 680,
       enemies: [
         { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
       ]
@@ -68,7 +68,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 1050, y: 0, z: 0 },
-      triggerX: 1050-370,
+      triggerX: 680,
       enemies: [
         { position: { x: -500, y: 0, z: 200 }, delay: 1000, enemyType: FootEnemy },
         { position: { x: 500, y: 0, z: 200 }, delay: 1500, enemyType: FootEnemy },
@@ -83,7 +83,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 1400, y: 0, z: 200 },
-      triggerX: 1300-370,
+      triggerX: 930,
       enemies: [
         { position: { x: -100, y: 100, z: 120 }, delay: 0, enemyType: WreckingBall },
         { position: { x: -120, y: 100, z: 125 }, delay: 200, enemyType: WreckingBall },
@@ -93,7 +93,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 1400, y: 0, z: 0 },
-      triggerX: 1300-370,
+      triggerX: 930,
       enemies: [
         { position: { x: -500, y: 0, z: 220 }, delay: 400, enemyType: BladeThrowerEnemy },
         { position: { x: -500, y: 0, z: 80 }, delay: 1400, enemyType: BladeThrowerEnemy },
@@ -103,7 +103,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 1550, y: 0, z: 0 },
-      triggerX: 1550-370,
+      triggerX: 1180,
       enemies: [
         { position: { x: -500, y: 0, z: 220 }, delay: 400, enemyType: BladeThrowerEnemy },
         { position: { x: -500, y: 0, z: 80 }, delay: 1400, enemyType: BladeThrowerEnemy },
@@ -114,7 +114,7 @@ class Level {
     {
       objectType: DoorSpawner,
       position: { x: 1983, y: 0, z: 283 },
-      triggerX: 2050-370,
+      triggerX: 1680,
       enemies: [
         { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
       ]
@@ -122,7 +122,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 2050, y: 0, z: 0 },
-      triggerX: 2050-370,
+      triggerX: 1680,
       enemies: [
         { position: { x: 500, y: 0, z: 240 }, delay: 1000, enemyType: FootEnemy },
         { position: { x: -500, y: 0, z: 240 }, delay: 2000, enemyType: FootEnemy },
@@ -135,7 +135,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 2200, y: 0, z: 0 },
-      triggerX: 2200-370,
+      triggerX: 1830,
       enemies: [
         { position: { x: 400, y: 0, z: 0 }, delay: 0, enemyType: FootEnemy },
         { position: { x: -500, y: 0, z: 200 }, delay: 15000, enemyType: FootEnemy },
@@ -149,7 +149,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 2700, y: 0, z: 200 },
-      triggerX: 2650-370,
+      triggerX: 2280,
       enemies: [
         { position: { x: -100, y: 100, z: 120 }, delay: 0, enemyType: WreckingBall },
         { position: { x: -120, y: 100, z: 125 }, delay: 200, enemyType: WreckingBall },
@@ -159,7 +159,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 2700, y: 0, z: 0 },
-      triggerX: 2650-370,
+      triggerX: 2280,
       enemies: [
         { position: { x: -500, y: 0, z: 220 }, delay: 400, enemyType: BladeThrowerEnemy },
         { position: { x: -500, y: 0, z: 80 }, delay: 1400, enemyType: BladeThrowerEnemy },
@@ -169,7 +169,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 2850, y: 0, z: 0 },
-      triggerX: 2850-370,
+      triggerX: 2480,
       enemies: [
         { position: { x: 400, y: 0, z: 20 }, delay: 400, enemyType: BladeThrowerEnemy },
         { position: { x: -500, y: 0, z: 240 }, delay: 1400, enemyType: BladeThrowerEnemy },
@@ -181,7 +181,7 @@ class Level {
     {
       objectType: DoorSpawner,
       position: { x: 2946, y: 0, z: 283 },
-      triggerX: 3150-370,
+      triggerX: 2780,
       enemies: [
         { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
         { position: { x: 500, y: 0, z: -25 }, delay: 1000, enemyType: FootEnemy },
@@ -194,7 +194,7 @@ class Level {
     {
       objectType: DoorSpawner,
       position: { x: 3268, y: 0, z: 283 },
-      triggerX: 3300-370,
+      triggerX: 2930,
       enemies: [
         { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
         { position: { x: 700, y: 0, z: -25 }, delay: 1000, enemyType: FootEnemy },
@@ -206,7 +206,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 3500, y: 0, z: 0 },
-      triggerX: 3500-370,
+      triggerX: 3130,
       enemies: [
         { position: { x: -500, y: 0, z: 240 }, delay: 0, enemyType: SwordEnemy },
         { position: { x: -500, y: 0, z: 240 }, delay: 500, enemyType: SwordEnemy },
@@ -221,13 +221,13 @@ class Level {
     {
       objectType: ElevatorSpawner,
       position: { x: 3594, y: 0, z: 280 },
-      triggerX: 3850-370,
+      triggerX: 3480,
       enemies: []
     },
     {
       objectType: ElevatorSpawner,
       position: { x: 3915, y: 0, z: 280 },
-      triggerX: 3850-370,
+      triggerX: 3480,
       enemies: [
         { position: { x: 30, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
         { position: { x: -305, y: 0, z: -5 }, delay: 300, enemyType: FootEnemy },
@@ -237,7 +237,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 3950, y: 0, z: 0 },
-      triggerX: 3950-370,
+      triggerX: 3580,
       enemies: [
         { position: { x: -500, y: 0, z: 50 }, delay: 0, enemyType: FootEnemy },
         { position: { x: 400, y: 0, z: 240 }, delay: 800, enemyType: FootEnemy },
@@ -249,7 +249,7 @@ class Level {
     {
       objectType: EnemySpawner,
       position: { x: 4100, y: 0, z: 0 },
-      triggerX: 4100-370,
+      triggerX: 3730,
       enemies: [
         { position: { x: -500, y: 0, z: 50 }, delay: 0, enemyType: SpearEnemy },
         { position: { x: -500, y: 0, z: 250 }, delay: 250, enemyType: SpearEnemy },

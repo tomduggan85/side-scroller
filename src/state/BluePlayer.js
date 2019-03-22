@@ -3,7 +3,7 @@ import { observable } from 'mobx'
 
 class BluePlayer extends Player {
   @observable
-  spriteUrl = '/assets/images/player1.png'
+  spriteUrl = '/assets/images/gameObjects/blue_player.png'
 
   @observable
   name = 'Leo'

@@ -3,7 +3,7 @@ import { observable } from 'mobx'
 
 class DoorSpawner extends EnemySpawner {
   @observable
-  spriteUrl = '/assets/images/breaking_door.png'
+  spriteUrl = '/assets/images/gameObjects/breaking_door.png'
 
   animationTracks = {
     default: {

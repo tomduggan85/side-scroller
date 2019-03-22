@@ -11,7 +11,7 @@ const BECOME_INVISIBLE_AT = -100
 
 class WreckingBall extends GameObject {
   @observable
-  spriteUrl = '/assets/images/wrecking_ball.png'
+  spriteUrl = '/assets/images/gameObjects/wrecking_ball.png'
 
   animationTracks = {
     default: {

@@ -35,7 +35,7 @@ class TitleScreen extends React.Component {
     return (
       <div className='TitleScreen'>
         <img
-          src='/assets/images/title_screen.png'
+          src='/assets/images/ui/title_screen.png'
           className='title-image'
           alt=''
         />
@@ -53,6 +53,14 @@ class TitleScreen extends React.Component {
           >
             <div className='indicator' />
             <span>2 Turtles</span>
+          </div>
+        </div>
+        <div className='instructions'>
+
+          <span className='hover-hint'>?</span>
+          <div className='instructions-text'>
+            Player 1: WSAD, spaceebar to jump, shift to attack<br/>
+            Player 2: Arrow keys, option to jump, / to attack
           </div>
         </div>
       </div>

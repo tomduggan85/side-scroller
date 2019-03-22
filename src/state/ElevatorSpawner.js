@@ -3,7 +3,7 @@ import { observable } from 'mobx'
 
 class ElevatorSpawner extends EnemySpawner {
   @observable
-  spriteUrl = '/assets/images/opening_elevator.png'
+  spriteUrl = '/assets/images/gameObjects/opening_elevator.png'
 
   animationTracks = {
     default: {
